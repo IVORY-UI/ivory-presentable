@@ -1,0 +1,100 @@
+
+@mixin row-culture {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+@mixin cell-culture {
+  padding: 0.5rem 0.75rem;
+}
+@mixin cell-wrap-culture {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.iv-ptable-container {
+  position: relative;
+  width: 100%;
+  border: 1px solid #d7d7d7;
+  .iv-ptable-header {
+    border-bottom: 1px solid #d7d7d7;
+    padding: 1rem;
+  }
+  .iv-ptable-footer {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #d7d7d7;
+    padding: 0.5rem 1rem;
+    .iv-ptable-records {
+      padding: 0.5rem 0;
+    }
+  }
+  .iv-ptable-content {
+    position: relative;
+  }
+  .iv-ptable-content-head {
+    @include row-culture;
+    border-bottom: 1px solid #d7d7d7;
+    background-color: #F1F6F8;
+    padding: 5px 0;
+    .iv-ptable-head-cell {
+      @include cell-culture;
+      border-left: 1px solid #d7d7d7;
+      cursor: pointer;
+      &:first-child {
+        border-left: none;
+      }
+    }
+  }
+  .iv-ptable-content-body {
+    height: 400px;
+    overflow: scroll;
+    .iv-ptable-content-row {
+      @include row-culture;
+      border-bottom: 1px solid #d7d7d7;
+      &:hover {
+        background-color: #E0F5FF;
+      }
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+    .iv-ptable-content-cell {
+      @include cell-culture;
+      @include cell-wrap-culture;
+    }
+  }
+  .iv-ptable-filters-row {
+    @include row-culture;
+    border-bottom: 1px solid #d7d7d7;
+    .iv-ptable-filter-cell {
+      @include cell-culture;
+      position: relative;
+    }
+    .iv-ptable-filter-popover {
+      display: none;
+      position: absolute;
+      top: 100%;
+      background: #fff;
+      border: 1px solid #d7d7d7;
+      z-index: 999;
+      padding: 1rem;
+      min-width: 200px;
+    }
+    .iv-ptable-filter-options {
+      padding: 0;
+      margin: 0 0 16px 0;
+      max-height: 200px;
+      overflow: scroll;
+    }
+    .iv-ptable-filter-option {
+      list-style: none;
+    }
+  }
+  
+
+  // Different cell styles
+  .iv-ptable-flex-cell {
+    flex: 1;
+  }
+}

@@ -1,1 +1,11 @@
-<ivory-presentable></ivory-presentable>
+<div class="page-container">
+  <p>Demo of IVORY Presentable</p>
+  <ivory-presentable
+    [columnDefs]="tableColumns"
+    [records]="tableData"
+    [recordsPerPage]="tablePageSize"
+    [recordsPerPageOptions]="tablePageSizeOptions"
+    [recordSelectionEnabled]="provideSelection"
+    (recordsSelected)="onRecordsSelected($event)"
+  ></ivory-presentable>
+</div>

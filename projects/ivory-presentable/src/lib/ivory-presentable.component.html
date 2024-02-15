@@ -1,1 +1,226 @@
-<p>Ivory Presentable</p>
+<div class="iv-ptable-container">
+  @if (!_isGridReady) {
+    <div>Loading</div>
+  }
+  @else {
+    <ng-container *ngTemplateOutlet="dtPrimeTemplate"></ng-container>
+  }
+
+  <ng-template #dtPrimeTemplate>
+    <!-- Datatable Header -->
+    <div class="iv-ptable-header">
+      This is heading space
+    </div>
+
+    <!-- Datatable Content starts -->
+    <div class="iv-ptable-content">
+
+      <!-- Column headings of the table -->
+      <div class="iv-ptable-content-head" role="row" aria-rowindex="1">
+        @if (recordSelectionEnabled) {
+          <div
+            class="iv-ptable-head-cell"
+          >
+            <input #dtSelectAll type="checkbox"
+              class="iv-ptable-all-select-checkbox"
+              tabindex="-1"
+              id="selectall"
+              (change)="whenSelectAll($event)"
+            />
+          </div>
+        }
+        @for (colItem of columns; track colItem; let i=$index) {
+          <div 
+            class="iv-ptable-head-cell iv-ptable-flex-cell" 
+            role="columnheader" 
+            attr.aria-colindex="{{i+1}}" 
+            (click)="doSort(colItem.field)"
+            [style.min-width.px]="colItem.width"
+          >
+            {{colItem.displayText}}
+            @if (_isSortApplied && _sortAppliedOn===colItem.field) {
+              @if (_sortType==='ASC') {
+                <span> &uarr;</span>
+              }
+              @else if (_sortType==='DESC') {
+                <span> &darr;</span>
+              }
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Filter space for each column  -->
+      <div #dtFilters class="iv-ptable-filters-row">
+        @if (recordSelectionEnabled) {
+          <div></div>
+        }
+        @for (colItem of columns; track colItem; let i=$index) {
+          <div class="iv-ptable-filter-cell">
+            @if (colItem.hasFilter && filterConfig[colItem.field]['type']==='list') {
+              <button class="iv-ptable-filter-trigger" (click)="toggleFilterPopover($event)">
+                Filter
+              </button>
+              <div #filterPopover class="iv-ptable-filter-popover" aria-label="filter options" role="presentation">
+                <ul class="iv-ptable-filter-options">
+                  @for (optionItem of filterConfig[colItem.field]['options']; track optionItem) {
+                    <li class="iv-ptable-filter-option">
+                      <input 
+                        type="checkbox" 
+                        [name]="optionItem.option" 
+                        id="{{colItem.field}}_{{optionItem.option}}"
+                        [(ngModel)]="optionItem.isSelected"
+                      />
+                      <label class="filter-option-label" for="{{colItem.field}}_{{optionItem.option}}">
+                        {{optionItem.option}}
+                      </label>
+                    </li>
+                  }
+                </ul>
+                <button class="iv-ptable-filter-apply" (click)="applyFilter($event, 'list', colItem.field)">Apply</button>
+              </div>
+            }
+            @else if (colItem.hasFilter && filterConfig[colItem.field]['type']==='text') {
+              <input 
+                type="text" 
+                [name]="colItem.field"
+                id="{{colItem.field}}"
+                [(ngModel)]="filterConfig[colItem.field]['keyword']" 
+                (keydown)="applyFilter($event, 'text', colItem.field)" 
+              />
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Table rows -->
+      <div #dtContentBody class="iv-ptable-content-body" role="rowgroup">
+        @for (dataItem of currVisibleData; track dataItem; let i=$index) {
+          <div 
+            class="iv-ptable-content-row" 
+            role="row"
+            attr.aria-rowindex="{{i+2}}" 
+            attr.row-index="{{i}}"
+            aria-label="Press SPACE to select this row."
+          >
+            @if (recordSelectionEnabled) {
+              <div class="iv-ptable-content-cell" role="gridcell">
+                <div class="iv-ptable-row-select" role="presentation">
+                  <input type="checkbox"
+                    class="iv-ptable-row-select-checkbox"
+                    tabindex="-1"
+                    name="dt_row_select"
+                    [checked]="dataItem.dtSelected"
+                    (change)="whenSelectRow($event, dataItem)"
+                  />
+                </div>
+              </div>
+            }
+            @for (colItem of columns; track colItem; let j=$index) {
+              <div 
+                class="iv-ptable-content-cell iv-ptable-flex-cell" 
+                role="gridcell" 
+                attr.aria-colindex="{{j+1}}" 
+                [style.min-width.px]="colItem.width"
+              >
+                {{dataItem[colItem.field]}}
+              </div>  
+            }
+          </div>
+        }
+      </div>
+
+    </div>
+    <!-- Datatable Content ends -->
+
+    <!-- Datatable Footer -->
+    <div class="iv-ptable-footer">
+      <div class="iv-ptable-records" role="status">
+        Records: {{processedData.length}}
+      </div>
+
+      @if (_hasPagination) {
+        <div class="iv-ptable-records" role="presentation">
+          <label 
+            for="folders-per-page"
+            aria-hidden="false"
+          >
+          Records per page: 
+          </label>
+          <select name="perPageOptions" 
+            id="folders-per-page" 
+            tabindex="0"
+            [(ngModel)]="page.size" 
+            (change)="updatePerPageRecords()"
+          >
+            @for (p of page.sizeOptions; track p) {
+              <option [value]="p">
+                {{ p }}
+              </option>
+            }
+          </select>
+        </div>
+      }
+
+      @if (_showPagination) {
+        <div class="iv-ptable-paginator">
+          <button type="button" 
+            aria-label="First page" 
+            tabindex="0"
+            class="iv-ptable-paginator-button" 
+            [disabled]="page.current===1"
+            [attr.aria-disabled]="page.current===1"
+            (click)="goto(1)"
+          >
+            &laquo;
+          </button>
+          &nbsp;
+          <button type="button" 
+            aria-label="Previous page" 
+            tabindex="0"
+            class="iv-ptable-paginator-button" 
+            [disabled]="page.current===1"
+            [attr.aria-disabled]="page.current===1" 
+            (click)="goto(page.current-1)"
+          >
+            &lsaquo;
+          </button> &nbsp;
+          <input
+            class="pagination-current clr-input"
+            type="text"
+            size="2"
+            id="go-to"
+            [(ngModel)]="page.goto"
+            (keydown.enter)="goto(null)"
+          />
+          &nbsp;/&nbsp;
+          <span class="pages-total">
+            {{ page.totalPages }}
+          </span>
+          &nbsp;
+          <button type="button"
+            aria-label="Next page" 
+            tabindex="0"
+            class="iv-ptable-paginator-button" 
+            [disabled]="page.current===page.totalPages" 
+            [attr.aria-disabled]="page.current===page.totalPages" 
+            (click)="goto(page.current + 1)"
+          >
+            &rsaquo;
+          </button>
+          &nbsp;
+          <button type="button"
+            aria-label="Last page" 
+            tabindex="0"
+            class="iv-ptable-paginator-button" 
+            [disabled]="page.current===page.totalPages" 
+            [attr.aria-disabled]="page.current===page.totalPages" 
+            (click)="goto(page.totalPages)"
+          >
+            &raquo;
+          </button>
+        </div>
+      }
+    </div>
+  </ng-template>
+</div>
