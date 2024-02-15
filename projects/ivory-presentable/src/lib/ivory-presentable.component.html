@@ -96,37 +96,14 @@
       <!-- Table rows -->
       <div #dtContentBody class="iv-ptable-content-body" role="rowgroup">
         @for (dataItem of currVisibleData; track dataItem; let i=$index) {
-          <div 
-            class="iv-ptable-content-row" 
-            role="row"
-            attr.aria-rowindex="{{i+2}}" 
-            attr.row-index="{{i}}"
-            aria-label="Press SPACE to select this row."
+
+          <ivory-presentable-row
+            [columns]="columns"
+            [rowIndex]="i"
+            [rowSelectionEnabled]="recordSelectionEnabled"
+            [rowData]="dataItem"
           >
-            @if (recordSelectionEnabled) {
-              <div class="iv-ptable-content-cell" role="gridcell">
-                <div class="iv-ptable-row-select" role="presentation">
-                  <input type="checkbox"
-                    class="iv-ptable-row-select-checkbox"
-                    tabindex="-1"
-                    name="dt_row_select"
-                    [checked]="dataItem.dtSelected"
-                    (change)="whenSelectRow($event, dataItem)"
-                  />
-                </div>
-              </div>
-            }
-            @for (colItem of columns; track colItem; let j=$index) {
-              <div 
-                class="iv-ptable-content-cell iv-ptable-flex-cell" 
-                role="gridcell" 
-                attr.aria-colindex="{{j+1}}" 
-                [style.min-width.px]="colItem.width"
-              >
-                {{dataItem[colItem.field]}}
-              </div>  
-            }
-          </div>
+          </ivory-presentable-row>
         }
       </div>
 

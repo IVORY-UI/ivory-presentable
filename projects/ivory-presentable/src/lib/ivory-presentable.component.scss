@@ -49,20 +49,6 @@
   .iv-ptable-content-body {
     height: 400px;
     overflow: scroll;
-    .iv-ptable-content-row {
-      @include row-culture;
-      border-bottom: 1px solid #d7d7d7;
-      &:hover {
-        background-color: #E0F5FF;
-      }
-      &:last-child {
-        border-bottom: none;
-      }
-    }
-    .iv-ptable-content-cell {
-      @include cell-culture;
-      @include cell-wrap-culture;
-    }
   }
   .iv-ptable-filters-row {
     @include row-culture;

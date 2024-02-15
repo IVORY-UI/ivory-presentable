@@ -1,0 +1,32 @@
+@mixin row-culture {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+@mixin cell-culture {
+  padding: 0.5rem 0.75rem;
+}
+@mixin cell-wrap-culture {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.iv-ptable-content-row {
+  @include row-culture;
+  border-bottom: 1px solid #d7d7d7;
+  &:hover {
+    background-color: #E0F5FF;
+  }
+  &:last-child {
+    border-bottom: none;
+  }
+  .iv-ptable-content-cell {
+    @include cell-culture;
+    @include cell-wrap-culture;
+  }
+}
+// Different cell styles
+.iv-ptable-flex-cell {
+  flex: 1;
+}

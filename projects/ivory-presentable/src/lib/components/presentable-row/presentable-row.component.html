@@ -1,0 +1,30 @@
+<div 
+  class="iv-ptable-content-row" 
+  role="row"
+  attr.aria-rowindex="{{rowIndex+2}}" 
+  attr.row-index="{{rowIndex}}"
+>
+  @if (rowSelectionEnabled) {
+    <div class="iv-ptable-content-cell" role="gridcell">
+      <div class="iv-ptable-row-select" role="presentation">
+        <input type="checkbox"
+          class="iv-ptable-row-select-checkbox"
+          tabindex="-1"
+          name="dt_row_select"
+          [checked]="rowData.dtSelected"
+          (change)="onRowSelectionChange($event, rowData)"
+        />
+      </div>
+    </div>
+  }
+  @for (colItem of columns; track colItem; let i=$index) {
+    <div 
+      class="iv-ptable-content-cell iv-ptable-flex-cell" 
+      role="gridcell" 
+      attr.aria-colindex="{{i+1}}" 
+      [style.min-width.px]="colItem.width"
+    >
+      {{rowData[colItem.field]}}
+    </div>  
+  }
+</div>
