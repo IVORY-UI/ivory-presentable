@@ -1,6 +1,6 @@
 # Ivory Presentable
 
-IVORY Presentable is a lightweight Angular data grid powered by IVORY UI. It has no third-party depedencies and integrated smoothly with your Angular applications.
+A lightweight Angular data grid powered by IVORY UI. It has no third-party dependencies and integrated smoothly with your Angular applications.
 
 ## Features
 
