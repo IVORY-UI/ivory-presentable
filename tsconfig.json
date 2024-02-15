@@ -2,16 +2,16 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "paths": {
-      "datagrid": [
-        "./dist/datagrid"
-      ]
-    },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
+    "paths": {
+      "ivory-presentable": [
+        "./dist/ivory-presentable"
+      ]
+    },
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,

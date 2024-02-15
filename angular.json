@@ -3,23 +3,23 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "datagrid": {
+    "ivory-presentable": {
       "projectType": "library",
-      "root": "projects/datagrid",
-      "sourceRoot": "projects/datagrid/src",
+      "root": "projects/ivory-presentable",
+      "sourceRoot": "projects/ivory-presentable/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/datagrid/ng-package.json"
+            "project": "projects/ivory-presentable/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/datagrid/tsconfig.lib.prod.json"
+              "tsConfig": "projects/ivory-presentable/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/datagrid/tsconfig.lib.json"
+              "tsConfig": "projects/ivory-presentable/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -27,7 +27,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "tsConfig": "projects/datagrid/tsconfig.spec.json",
+            "tsConfig": "projects/ivory-presentable/tsconfig.spec.json",
             "polyfills": [
               "zone.js",
               "zone.js/testing"
@@ -36,34 +36,41 @@
         }
       }
     },
-    "showcase": {
+    "demo": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "standalone": false
+        },
+        "@schematics/angular:directive": {
+          "standalone": false
+        },
+        "@schematics/angular:pipe": {
+          "standalone": false
         }
       },
-      "root": "projects/showcase",
-      "sourceRoot": "projects/showcase/src",
+      "root": "projects/demo",
+      "sourceRoot": "projects/demo/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/showcase",
-            "index": "projects/showcase/src/index.html",
-            "browser": "projects/showcase/src/main.ts",
+            "outputPath": "dist/demo",
+            "index": "projects/demo/src/index.html",
+            "browser": "projects/demo/src/main.ts",
             "polyfills": [
               "zone.js"
             ],
-            "tsConfig": "projects/showcase/tsconfig.app.json",
+            "tsConfig": "projects/demo/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/showcase/src/favicon.ico",
-              "projects/showcase/src/assets"
+              "projects/demo/src/favicon.ico",
+              "projects/demo/src/assets"
             ],
             "styles": [
-              "projects/showcase/src/styles.scss"
+              "projects/demo/src/styles.scss"
             ],
             "scripts": []
           },
@@ -95,10 +102,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "showcase:build:production"
+              "buildTarget": "demo:build:production"
             },
             "development": {
-              "buildTarget": "showcase:build:development"
+              "buildTarget": "demo:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -106,7 +113,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "showcase:build"
+            "buildTarget": "demo:build"
           }
         },
         "test": {
@@ -116,14 +123,14 @@
               "zone.js",
               "zone.js/testing"
             ],
-            "tsConfig": "projects/showcase/tsconfig.spec.json",
+            "tsConfig": "projects/demo/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/showcase/src/favicon.ico",
-              "projects/showcase/src/assets"
+              "projects/demo/src/favicon.ico",
+              "projects/demo/src/assets"
             ],
             "styles": [
-              "projects/showcase/src/styles.scss"
+              "projects/demo/src/styles.scss"
             ],
             "scripts": []
           }
@@ -132,6 +139,6 @@
     }
   },
   "cli": {
-    "analytics": "02a955c6-1b68-4cac-953e-22e968ae39e5"
+    "analytics": false
   }
 }
