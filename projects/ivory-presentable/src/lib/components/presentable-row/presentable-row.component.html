@@ -1,14 +1,14 @@
 <div 
-  class="iv-ptable-content-row" 
+  class="ivpt-content-row" 
   role="row"
   attr.aria-rowindex="{{rowIndex+2}}" 
   attr.row-index="{{rowIndex}}"
 >
   @if (rowSelectionEnabled) {
-    <div class="iv-ptable-content-cell" role="gridcell">
-      <div class="iv-ptable-row-select" role="presentation">
+    <div class="ivpt-content-cell" role="gridcell">
+      <div class="ivpt-row-select" role="presentation">
         <input type="checkbox"
-          class="iv-ptable-row-select-checkbox"
+          class="ivpt-row-select-checkbox"
           tabindex="-1"
           name="dt_row_select"
           [checked]="rowData.dtSelected"
@@ -19,7 +19,7 @@
   }
   @for (colItem of columns; track colItem; let i=$index) {
     <div 
-      class="iv-ptable-content-cell iv-ptable-flex-cell" 
+      class="ivpt-content-cell ivpt-flex-cell" 
       role="gridcell" 
       attr.aria-colindex="{{i+1}}" 
       [style.min-width.px]="colItem.width"

@@ -1,0 +1,13 @@
+@mixin row-culture {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+@mixin cell-culture {
+  padding: 0.5rem 0.75rem;
+}
+@mixin cell-wrap-culture {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

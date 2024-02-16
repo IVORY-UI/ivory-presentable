@@ -1,4 +1,4 @@
-<div class="iv-ptable-container">
+<div class="ivpt-container">
   @if (!_isGridReady) {
     <div>Loading</div>
   }
@@ -8,21 +8,21 @@
 
   <ng-template #dtPrimeTemplate>
     <!-- Datatable Header -->
-    <div class="iv-ptable-header">
+    <div class="ivpt-header">
       This is heading space
     </div>
 
     <!-- Datatable Content starts -->
-    <div class="iv-ptable-content">
+    <div class="ivpt-content">
 
       <!-- Column headings of the table -->
-      <div class="iv-ptable-content-head" role="row" aria-rowindex="1">
+      <div class="ivpt-content-head" role="row" aria-rowindex="1">
         @if (recordSelectionEnabled) {
           <div
-            class="iv-ptable-head-cell"
+            class="ivpt-head-cell"
           >
             <input #dtSelectAll type="checkbox"
-              class="iv-ptable-all-select-checkbox"
+              class="ivpt-all-select-checkbox"
               tabindex="-1"
               id="selectall"
               (change)="whenSelectAll($event)"
@@ -31,7 +31,7 @@
         }
         @for (colItem of columns; track colItem; let i=$index) {
           <div 
-            class="iv-ptable-head-cell iv-ptable-flex-cell" 
+            class="ivpt-head-cell ivpt-flex-cell" 
             role="columnheader" 
             attr.aria-colindex="{{i+1}}" 
             (click)="doSort(colItem.field)"
@@ -51,20 +51,20 @@
       </div>
 
       <!-- Filter space for each column  -->
-      <div #dtFilters class="iv-ptable-filters-row">
+      <div #dtFilters class="ivpt-filters-row">
         @if (recordSelectionEnabled) {
-          <div></div>
+          <div class="ivpt-filter-cell ivpt-flex-cell" style="max-width: 45px;"></div>
         }
         @for (colItem of columns; track colItem; let i=$index) {
-          <div class="iv-ptable-filter-cell">
+          <div class="ivpt-filter-cell ivpt-flex-cell">
             @if (colItem.hasFilter && filterConfig[colItem.field]['type']==='list') {
-              <button class="iv-ptable-filter-trigger" (click)="toggleFilterPopover($event)">
+              <button class="ivpt-filter-trigger" (click)="toggleFilterPopover($event)">
                 Filter
               </button>
-              <div #filterPopover class="iv-ptable-filter-popover" aria-label="filter options" role="presentation">
-                <ul class="iv-ptable-filter-options">
+              <div #filterPopover class="ivpt-filter-popover" aria-label="filter options" role="presentation">
+                <ul class="ivpt-filter-options">
                   @for (optionItem of filterConfig[colItem.field]['options']; track optionItem) {
-                    <li class="iv-ptable-filter-option">
+                    <li class="ivpt-filter-option">
                       <input 
                         type="checkbox" 
                         [name]="optionItem.option" 
@@ -77,11 +77,12 @@
                     </li>
                   }
                 </ul>
-                <button class="iv-ptable-filter-apply" (click)="applyFilter($event, 'list', colItem.field)">Apply</button>
+                <button class="ivpt-filter-apply" (click)="applyFilter($event, 'list', colItem.field)">Apply</button>
               </div>
             }
             @else if (colItem.hasFilter && filterConfig[colItem.field]['type']==='text') {
               <input 
+                class="ivpt-filter-input"
                 type="text" 
                 [name]="colItem.field"
                 id="{{colItem.field}}"
@@ -94,7 +95,7 @@
       </div>
 
       <!-- Table rows -->
-      <div #dtContentBody class="iv-ptable-content-body" role="rowgroup">
+      <div #dtContentBody class="ivpt-content-body" role="rowgroup">
         @for (dataItem of currVisibleData; track dataItem; let i=$index) {
           <ivory-presentable-row
             [columns]="columns"
@@ -110,13 +111,13 @@
     <!-- Datatable Content ends -->
 
     <!-- Datatable Footer -->
-    <div class="iv-ptable-footer">
-      <div class="iv-ptable-records" role="status">
+    <div class="ivpt-footer">
+      <div class="ivpt-records" role="status">
         Records: {{processedData.length}}
       </div>
 
       @if (_hasPagination) {
-        <div class="iv-ptable-records" role="presentation">
+        <div class="ivpt-records" role="presentation">
           <label 
             for="folders-per-page"
             aria-hidden="false"
@@ -139,11 +140,11 @@
       }
 
       @if (_showPagination) {
-        <div class="iv-ptable-paginator">
+        <div class="ivpt-paginator">
           <button type="button" 
             aria-label="First page" 
             tabindex="0"
-            class="iv-ptable-paginator-button" 
+            class="ivpt-paginator-button" 
             [disabled]="page.current===1"
             [attr.aria-disabled]="page.current===1"
             (click)="goto(1)"
@@ -154,7 +155,7 @@
           <button type="button" 
             aria-label="Previous page" 
             tabindex="0"
-            class="iv-ptable-paginator-button" 
+            class="ivpt-paginator-button" 
             [disabled]="page.current===1"
             [attr.aria-disabled]="page.current===1" 
             (click)="goto(page.current-1)"
@@ -177,7 +178,7 @@
           <button type="button"
             aria-label="Next page" 
             tabindex="0"
-            class="iv-ptable-paginator-button" 
+            class="ivpt-paginator-button" 
             [disabled]="page.current===page.totalPages" 
             [attr.aria-disabled]="page.current===page.totalPages" 
             (click)="goto(page.current + 1)"
@@ -188,7 +189,7 @@
           <button type="button"
             aria-label="Last page" 
             tabindex="0"
-            class="iv-ptable-paginator-button" 
+            class="ivpt-paginator-button" 
             [disabled]="page.current===page.totalPages" 
             [attr.aria-disabled]="page.current===page.totalPages" 
             (click)="goto(page.totalPages)"
