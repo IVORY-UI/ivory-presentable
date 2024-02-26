@@ -10,15 +10,6 @@
     border-bottom: 1px solid $ivpt-border-color-standard;
     padding: 1rem;
   }
-  .ivpt-footer {
-    display: flex;
-    justify-content: space-between;
-    border-top: 1px solid $ivpt-border-color-standard;
-    padding: 0.5rem 1rem;
-    .ivpt-records {
-      padding: 0.5rem 0;
-    }
-  }
   .ivpt-content {
     position: relative;
   }
@@ -69,5 +60,16 @@
   }
   .ivpt-filter-option {
     list-style: none;
+  }
+}
+
+.ivpt-paginator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid $ivpt-border-color-standard;
+  padding: 0.5rem 1rem;
+  .ivpt-records {
+    padding: 0.5rem 0;
   }
 }
