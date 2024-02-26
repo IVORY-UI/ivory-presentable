@@ -163,9 +163,10 @@ export class AppComponent implements OnInit, OnDestroy {
     },
   ];
   public tableData = [];
+  public tablePagination = true;
   public tablePageSize = 100;
   public tablePageSizeOptions = [25, 50, 100, 200];
-  public provideSelection = true;
+  public tableSelection = true;
 
   ngOnInit() {
     this.getData();

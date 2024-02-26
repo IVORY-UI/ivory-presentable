@@ -8,20 +8,34 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class IvoryPresentableComponent {
 
-  /** Variables */
-  _isGridReady = false;
+  // Columns
+  columns: any;
 
-  // For sort
+  // Records Data
+  dataTrueCopy: any;
+  processedData: any;
+  currVisibleData: any;
+
+  // Sorting
   _isSortApplied = false;
   _sortAppliedOn = '';
   _sortType = '';
 
-  // For filter
+  // Filtering
   _isFilterApplied = false;
   filterConfig: any = {};
 
-  /** Inputs */
-  columns: any;
+  // Pagination
+  _showPagination = false;
+  
+  _pageCurrent: number = 1;
+  _pageGoto: number = 1;
+  _pagesTotal: number = 1;
+  _recordsTotal: number = 0;
+
+  // Grid rendering
+  _isGridReady = false;
+  
   @Input() set columnDefs(value: any) {
     this.columns = value;
     for (const colItem of this.columns) {
@@ -44,32 +58,9 @@ export class IvoryPresentableComponent {
     return this.columns;
   }
 
-  // For Pagination
-  page: any = {}
-  _hasPagination = false;
-  _showPagination = false;  
-
-  @Input() set recordsPerPage(value: any) {
-    this.page.size = value;
-    this._hasPagination = true;
-  }
-  get recordsPerPage() {
-    return this.page.size;
-  }
-
-  @Input() set recordsPerPageOptions(value: any) {
-    this.page.sizeOptions = value;
-  }
-  get recordsPerPageOptions() {
-    return this.page.sizeOptions;
-  }
-
-  // Data
-  dataTrueCopy: any;
-  processedData: any;
-  currVisibleData: any;
   @Input() set records(value: any) {
     this.dataTrueCopy = value;
+    this._recordsTotal = this.dataTrueCopy.length;
     Object.freeze(this.dataTrueCopy);
     this.processData();
   }
@@ -77,7 +68,13 @@ export class IvoryPresentableComponent {
     return this.dataTrueCopy;
   }
 
-  @Input() recordSelectionEnabled: boolean = false;
+  @Input() hasPagination: boolean = false;
+
+  @Input() recordsPerPage: number = 0;
+
+  @Input() recordsPerPageOptions: any;
+
+  @Input() recordsSelectable: boolean = false;
 
   @Output() recordsSelected = new EventEmitter();
 
@@ -91,12 +88,12 @@ export class IvoryPresentableComponent {
 
   processData() {
     this.processedData = structuredClone(this.dataTrueCopy);
-    if (!this._hasPagination) {
+    if (!this.hasPagination) {
       this.currVisibleData =  this.processedData;
     } else {
       this.resetPagination();
       this.calculatePages(this.processedData.length);
-      this.renderData(0, this.page.size);
+      this.renderData(0, this.recordsPerPage);
     }
     this._isGridReady = true;
   }
@@ -133,7 +130,7 @@ export class IvoryPresentableComponent {
     } else if (orderBy === 'DESC') {
       this.processedData.sort((a: any, b: any) => a[theField] > b[theField] ? -1 : 1);
     }
-    this.renderData(0, this.page.size);
+    this.renderData(0, this.recordsPerPage);
   }
 
   resetSort() {
@@ -141,7 +138,7 @@ export class IvoryPresentableComponent {
     this._sortAppliedOn = '';
     this._sortType = '';
     this.processedData = structuredClone(this.dataTrueCopy);
-    this.renderData(0, this.page.size);
+    this.renderData(0, this.recordsPerPage);
   }
 
   // Handles filter
@@ -181,36 +178,36 @@ export class IvoryPresentableComponent {
 
   // Handles Pagination
   calculatePages(totalRecords: number) {
-    this.page.totalRecords = totalRecords;
-    this.page.totalPages = Math.ceil(this.page.totalRecords / this.page.size);
-    this._showPagination = this.page.totalRecords > this.page.size;
+    this._recordsTotal = totalRecords;
+    this._pagesTotal = Math.ceil(this._recordsTotal / this.recordsPerPage);
+    this._showPagination = this._recordsTotal > this.recordsPerPage;
   }
 
   updatePerPageRecords() {
     this.resetPagination(); // Review: this logic needs to be changed
-    this.page.totalPages = Math.ceil(this.page.totalRecords / this.page.size);
-    this.renderData(0, this.page.size);
+    this._pagesTotal = Math.ceil(this._recordsTotal / this.recordsPerPage);
+    this.renderData(0, this.recordsPerPage);
   }
 
   goto(pageNumber: any) {
-    if (pageNumber!==null && pageNumber!==undefined && pageNumber!==this.page.current) { 
+    if (pageNumber!==null && pageNumber!==undefined && pageNumber!==this._pageCurrent) { 
       console.log('Selected page - ', pageNumber);
-      let startRecord = (pageNumber-1) * this.page.size;
-      let endRecord = ((startRecord+this.page.size) > this.page.totalRecords) ? this.page.totalRecords : startRecord + this.page.size;
+      let startRecord = (pageNumber-1) * this.recordsPerPage;
+      let endRecord = ((startRecord+this.recordsPerPage) > this._recordsTotal) ? this._recordsTotal : startRecord + this.recordsPerPage;
       this.renderData(startRecord, endRecord);
-      this.page.goto = this.page.current = pageNumber;
+      this._pageGoto = this._pageCurrent = pageNumber;
     } else {
-      if (this.page.goto<1) {
-        this.page.goto=1;
-      } else if (this.page.goto>this.page.totalPages) {
-        this.page.goto = this.page.totalPages;
+      if (this._pageGoto<1) {
+        this._pageGoto=1;
+      } else if (this._pageGoto>this._pagesTotal) {
+        this._pageGoto = this._pagesTotal;
       }
-      this.goto(this.page.goto);
+      this.goto(this._pageGoto);
     }
   }
 
   resetPagination() {
-    this.page.goto = this.page.current = 1;
+    this._pageGoto = this._pageCurrent = 1;
   }
 
   // Row Selection
@@ -229,7 +226,7 @@ export class IvoryPresentableComponent {
   }
 
   whenSelectRow($event: any, row: any) {
-    if (this.recordSelectionEnabled) {
+    if (this.recordsSelectable) {
       if ($event.target.checked) {
         row['dtSelected'] = true;
         this.selectedRows.push(row);

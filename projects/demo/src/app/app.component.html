@@ -3,9 +3,10 @@
   <ivory-presentable
     [columnDefs]="tableColumns"
     [records]="tableData"
+    [hasPagination]="tablePagination"
     [recordsPerPage]="tablePageSize"
     [recordsPerPageOptions]="tablePageSizeOptions"
-    [recordSelectionEnabled]="provideSelection"
+    [recordsSelectable]="tableSelection"
     (recordsSelected)="onRecordsSelected($event)"
   ></ivory-presentable>
 </div>
