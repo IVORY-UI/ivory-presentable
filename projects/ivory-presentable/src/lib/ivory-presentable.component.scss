@@ -46,9 +46,12 @@
   border-bottom: 1px solid $ivpt-border-color-standard;
   background-color: $ivpt-background-standard;
 }
-.ivpt-head-cell {
+.ivpt-selectall-cell {
   display: flex;
   padding: 0 0.5rem;
+}
+.ivpt-head-cell {
+  display: flex;
   cursor: pointer;
   justify-content: space-between;
   align-items: center;
@@ -57,6 +60,10 @@
   }
 }
 .ivpt-column-title {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 0.5rem;
   line-height: 2.5rem;
 }
 .ivpt-column-ext {

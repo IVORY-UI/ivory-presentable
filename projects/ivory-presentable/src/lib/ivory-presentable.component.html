@@ -28,7 +28,7 @@
       <div class="ivpt-content-head" role="row" aria-rowindex="1">
         @if (recordsSelectable) {
           <div
-            class="ivpt-head-cell"
+            class="ivpt-selectall-cell"
           >
             <input #ivptSelectAll type="checkbox"
               class="ivpt-all-select-checkbox"
@@ -48,8 +48,6 @@
           >
             <div class="ivpt-column-title">
               {{colItem.displayText}}
-            </div>
-            <div class="ivpt-column-ext">
               @if (_isSortApplied && _sortAppliedOn===colItem.field) {
                 @if (_sortType==='ASC') {
                   <span class="ivpt-sort-identifier"> &uarr;</span>
@@ -58,6 +56,8 @@
                   <span class="ivpt-sort-identifier"> &darr;</span>
                 }
               }
+            </div>
+            <div class="ivpt-column-ext">
               <presentable-column-resizer></presentable-column-resizer>
             </div>
           </div>
