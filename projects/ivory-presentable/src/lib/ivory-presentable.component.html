@@ -70,7 +70,10 @@
           <div class="ivpt-filter-cell ivpt-flex-cell" style="max-width: 36px;"></div>
         }
         @for (colItem of columns; track colItem; let i=$index) {
-          <div class="ivpt-filter-cell ivpt-flex-cell">
+          <div 
+            class="ivpt-filter-cell ivpt-flex-cell"
+            [style.min-width.px]="colItem.width"
+          >
             @if (colItem.hasFilter && filterConfig[colItem.field]['type']==='list') {
               <button class="ivpt-filter-trigger" (click)="toggleFilterPopover($event)">
                 Filter
