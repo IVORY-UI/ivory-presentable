@@ -1,12 +1,14 @@
-import { Component, Input, ElementRef, Renderer2, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, ElementRef, Renderer2, Output, EventEmitter, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+
+import { PRESENTABLE_CONFIG } from './config/config';
 
 @Component({
   selector: 'ivory-presentable',
   templateUrl: './ivory-presentable.component.html',
   styleUrl: './ivory-presentable.component.scss'
 })
-export class IvoryPresentableComponent {
+export class IvoryPresentableComponent implements OnInit, AfterViewInit {
 
   // Columns
   columns: any;
@@ -33,8 +35,13 @@ export class IvoryPresentableComponent {
   _pagesTotal: number = 1;
   _recordsTotal: number = 0;
 
+  // Column Controls
+  _showController: boolean = false;
+
   // Grid rendering
   _isGridReady = false;
+
+  @Input() gridHeight!: number;
   
   @Input() set columnDefs(value: any) {
     this.columns = value;
@@ -58,6 +65,8 @@ export class IvoryPresentableComponent {
     return this.columns;
   }
 
+  @Input() columnControls: boolean = false;
+
   @Input() set records(value: any) {
     this.dataTrueCopy = value;
     this._recordsTotal = this.dataTrueCopy.length;
@@ -78,13 +87,33 @@ export class IvoryPresentableComponent {
 
   @Output() recordsSelected = new EventEmitter();
 
-  @ViewChild('dtSelectAll') _dtSelectAll: ElementRef<any> | undefined;
+  @ViewChild('ivptController') ivptControllerRef: ElementRef | undefined;
+
+  @ViewChild('ivptSelectAll') ivptSelectAllRef: ElementRef | undefined;
+
+  @ViewChild('ivptContentBody') ivptContentBodyRef: ElementRef | undefined;
+
+  @ViewChild('ivptFilters') ivptFiltersRef: ElementRef | undefined; 
+
+  ngAfterViewInit() {
+    if (this.ivptContentBodyRef) {
+      this.ivptContentBodyRef.nativeElement.style.height = (this.gridHeight -
+        (PRESENTABLE_CONFIG.headerSpace.height +
+          PRESENTABLE_CONFIG.column.headHeight +
+          PRESENTABLE_CONFIG.filterSpace.height +
+          PRESENTABLE_CONFIG.paginator.height))+'px';
+    }
+  }
 
   constructor(
     private renderer: Renderer2,
     private el: ElementRef,
     private domSanitizer: DomSanitizer
-  ) {} 
+  ) {}
+
+  ngOnInit() {
+    
+  }
 
   processData() {
     this.processedData = structuredClone(this.dataTrueCopy);
@@ -230,8 +259,8 @@ export class IvoryPresentableComponent {
       if ($event.target.checked) {
         row['dtSelected'] = true;
         this.selectedRows.push(row);
-        if (this._dtSelectAll) {
-          this._dtSelectAll.nativeElement.indeterminate = true; 
+        if (this.ivptSelectAllRef) {
+          this.ivptSelectAllRef.nativeElement.indeterminate = true; 
         }
       } else {
         row['dtSelected'] = false;
@@ -243,5 +272,9 @@ export class IvoryPresentableComponent {
     }
     this.recordsSelected.emit(this.selectedRows);
   }
+
+
+  // Handles columns controller
+  
 
 }

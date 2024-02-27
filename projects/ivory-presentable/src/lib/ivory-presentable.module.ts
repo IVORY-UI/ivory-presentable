@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { IvoryPresentableComponent } from './ivory-presentable.component';
 import { PresentableRowComponent } from './components/presentable-row/presentable-row.component';
+import { PresentableColumnResizerComponent } from './components/presentable-column-resizer/presentable-column-resizer.component';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { PresentableRowComponent } from './components/presentable-row/presentabl
   ],
   declarations: [
     IvoryPresentableComponent,
-    PresentableRowComponent
+    PresentableRowComponent,
+    PresentableColumnResizerComponent
   ],
   exports: [
     IvoryPresentableComponent

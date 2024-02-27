@@ -1,7 +1,9 @@
 <div class="page-container">
   <p>Demo of IVORY Presentable</p>
   <ivory-presentable
+    [gridHeight]="tableHeight"  
     [columnDefs]="tableColumns"
+    [columnControls]="tableControls"
     [records]="tableData"
     [hasPagination]="tablePagination"
     [recordsPerPage]="tablePageSize"

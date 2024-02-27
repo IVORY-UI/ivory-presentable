@@ -1,4 +1,4 @@
-<div class="ivpt-container">
+<div class="ivpt-container" [ngStyle]="{ 'height.px': gridHeight }">
   @if (!_isGridReady) {
     <div>Loading</div>
   }
@@ -9,9 +9,16 @@
   <ng-template #dtPrimeTemplate>
     <!-- Datatable Header -->
     <div class="ivpt-header">
-      <button class="">
-        Controls
-      </button>
+      <div class="ivpt-column-controller">
+        <button class="ivpt-column-controller-handle" (click)="_showController=!_showController">
+          Columns
+        </button>
+        @if (_showController) {
+          <div #ivptController class="ivpt-column-controller-modal">
+
+          </div>
+        }
+      </div>
     </div>
 
     <!-- Datatable Content starts -->
@@ -23,7 +30,7 @@
           <div
             class="ivpt-head-cell"
           >
-            <input #dtSelectAll type="checkbox"
+            <input #ivptSelectAll type="checkbox"
               class="ivpt-all-select-checkbox"
               tabindex="-1"
               id="selectall"
@@ -39,23 +46,28 @@
             (click)="doSort(colItem.field)"
             [style.min-width.px]="colItem.width"
           >
-            {{colItem.displayText}}
-            @if (_isSortApplied && _sortAppliedOn===colItem.field) {
-              @if (_sortType==='ASC') {
-                <span> &uarr;</span>
+            <div class="ivpt-column-title">
+              {{colItem.displayText}}
+            </div>
+            <div class="ivpt-column-ext">
+              @if (_isSortApplied && _sortAppliedOn===colItem.field) {
+                @if (_sortType==='ASC') {
+                  <span class="ivpt-sort-identifier"> &uarr;</span>
+                }
+                @else if (_sortType==='DESC') {
+                  <span class="ivpt-sort-identifier"> &darr;</span>
+                }
               }
-              @else if (_sortType==='DESC') {
-                <span> &darr;</span>
-              }
-            }
+              <presentable-column-resizer></presentable-column-resizer>
+            </div>
           </div>
         }
       </div>
 
       <!-- Filter space for each column  -->
-      <div #dtFilters class="ivpt-filters-row">
+      <div #ivpttFilters class="ivpt-filters-row">
         @if (recordsSelectable) {
-          <div class="ivpt-filter-cell ivpt-flex-cell" style="max-width: 45px;"></div>
+          <div class="ivpt-filter-cell ivpt-flex-cell" style="max-width: 36px;"></div>
         }
         @for (colItem of columns; track colItem; let i=$index) {
           <div class="ivpt-filter-cell ivpt-flex-cell">
@@ -97,7 +109,7 @@
       </div>
 
       <!-- Table rows -->
-      <div #dtContentBody class="ivpt-content-body" role="rowgroup">
+      <div #ivptContentBody class="ivpt-content-body" role="rowgroup">
         @for (dataItem of currVisibleData; track dataItem; let i=$index) {
           <ivory-presentable-row
             [columns]="columns"
@@ -112,10 +124,9 @@
     </div>
     <!-- Datatable Content ends -->
 
-    <!-- Datatable Footer -->
+    <!-- Datatable Paginator -->
     @if (hasPagination) {
-      <div class="ivpt-paginator">
-      
+      <div #ivptPaginator class="ivpt-paginator">
         <div class="ivpt-records-summary" role="status">
           {{((_pageCurrent-1)*recordsPerPage)+1}} to {{_pageCurrent * recordsPerPage}} of {{_recordsTotal}}
         </div>

@@ -7,33 +7,68 @@
   width: 100%;
   border: 1px solid $ivpt-border-color-standard;
   .ivpt-header {
+    display: flex;
+    justify-content: flex-end;
+    height: 45px;
     border-bottom: 1px solid $ivpt-border-color-standard;
-    padding: 1rem;
   }
   .ivpt-content {
     position: relative;
   }
-  .ivpt-content-head {
-    @include row-culture;
-    border-bottom: 1px solid $ivpt-border-color-standard;
-    background-color: #e9ecef;
-    padding: 5px 0;
-    .ivpt-head-cell {
-      @include cell-culture;
-      cursor: pointer;
-      &:first-child {
-        border-left: none;
-      }
-    }
-  }
   .ivpt-content-body {
-    height: 400px;
+    position: relative;
     overflow: scroll;
+  }
+}
+
+.ivpt-column-controller {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  &-handle {
+    @include button-culture;
+  }
+  &-modal {
+    position: absolute;
+    top: 45px;
+    background-color: #FFFFFF;
+    width: 360px;
+    z-index: 9999;
+    right: 0;
+    height: calc(100% - 45px);
+    border: 1px solid $ivpt-border-color-standard;
+  }
+}
+
+.ivpt-content-head {
+  @include row-culture;
+  height: 45px;
+  border-bottom: 1px solid $ivpt-border-color-standard;
+  background-color: $ivpt-background-standard;
+}
+.ivpt-head-cell {
+  display: flex;
+  padding: 0 0.5rem;
+  cursor: pointer;
+  justify-content: space-between;
+  align-items: center;
+  &:first-child {
+    border-left: none;
+  }
+}
+.ivpt-column-title {
+  line-height: 2.5rem;
+}
+.ivpt-column-ext {
+  display: flex;
+  .ivpt-sort-identifier {
+    padding: 0 5px;
   }
 }
 
 .ivpt-filters-row {
   @include row-culture;
+  height: 45px;
   border-bottom: 1px solid $ivpt-border-color-standard;
   .ivpt-filter-cell {
     @include cell-culture;
@@ -64,12 +99,17 @@
 }
 
 .ivpt-paginator {
+  position: relative;
   display: flex;
+  height: 45px;
   align-items: center;
   justify-content: space-between;
   border-top: 1px solid $ivpt-border-color-standard;
-  padding: 0.5rem 1rem;
+  padding: 0 1rem;
   .ivpt-records {
     padding: 0.5rem 0;
+  }
+  .ivpt-paginator-button {
+    @include button-culture;
   }
 }

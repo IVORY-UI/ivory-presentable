@@ -13,6 +13,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private http: HttpClient
   ) {}
 
+  public tableHeight = 600;
   public tableColumns = [
     { 
       'field': 'athlete',
@@ -162,6 +163,7 @@ export class AppComponent implements OnInit, OnDestroy {
       'displayText': 'Total'
     },
   ];
+  public tableControls = true;
   public tableData = [];
   public tablePagination = true;
   public tablePageSize = 100;
