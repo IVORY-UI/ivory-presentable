@@ -12,23 +12,31 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private http: HttpClient
   ) {}
-
-  public tableHeight = 600;
+  
+  public tableConfig = {
+    height: 600,
+    style: 'standard'
+  };
   public tableColumns = [
     { 
       'field': 'athlete',
-      'displayText': 'Athlete',
+      'title': 'Athlete',
+      'visible': true,
       'hasFilter': true,
+      'filterType': 'text',
       'width': '140'
     },
     { 
       'field': 'age',
-      'displayText': 'Age'
+      'title': 'Age',
+      'visible': true,
     },
     { 
       'field': 'country',
-      'displayText': 'Country',
+      'title': 'Country',
+      'visible': true,
       'hasFilter': true,
+      'filterType': 'options',
       'filterOptions': [
         'Armenia',
         'Austria',
@@ -94,16 +102,20 @@ export class AppComponent implements OnInit, OnDestroy {
     },
     { 
       'field': 'year', 
-      'displayText': 'Year'
+      'title': 'Year',
+      'visible': true,
     },
     { 
       'field': 'date',
-      'displayText': 'Date'
+      'title': 'Date',
+      'visible': true,
     },
     { 
       'field': 'sport',
-      'displayText': 'Sport',
+      'title': 'Sport',
+      'visible': true,
       'hasFilter': true,
+      'filterType': 'options',
       'filterOptions': [
         'Alpine Skiing',
         'Archery',
@@ -148,19 +160,23 @@ export class AppComponent implements OnInit, OnDestroy {
     },
     { 
       'field': 'gold',
-      'displayText': 'Gold'
+      'title': 'Gold',
+      'visible': true,
     },
     { 
       'field': 'silver',
-      'displayText': 'Silver'
+      'title': 'Silver',
+      'visible': true,
     },
     { 
       'field': 'bronze',
-      'displayText': 'Bronze'
+      'title': 'Bronze',
+      'visible': true,
     },
     { 
       'field': 'total',
-      'displayText': 'Total'
+      'title': 'Total',
+      'visible': true,
     },
   ];
   public tableControls = true;

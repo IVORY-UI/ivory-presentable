@@ -1,4 +1,4 @@
-<div class="ivpt-container" [ngStyle]="{ 'height.px': gridHeight }">
+<div class="ivpt-container" [ngStyle]="{ 'height.px': gridDefs.height }">
   @if (!_isGridReady) {
     <div>Loading</div>
   }
@@ -9,16 +9,11 @@
   <ng-template #dtPrimeTemplate>
     <!-- Datatable Header -->
     <div class="ivpt-header">
-      <div class="ivpt-column-controller">
-        <button class="ivpt-column-controller-handle" (click)="_showController=!_showController">
-          Columns
-        </button>
-        @if (_showController) {
-          <div #ivptController class="ivpt-column-controller-modal">
-
-          </div>
-        }
-      </div>
+      @if (columnControls) {
+        <presentable-column-controls
+          [columns]="columns"
+        ></presentable-column-controls>
+      }
     </div>
 
     <!-- Datatable Content starts -->
@@ -47,7 +42,7 @@
             [style.min-width.px]="colItem.width"
           >
             <div class="ivpt-column-title">
-              {{colItem.displayText}}
+              {{colItem.title}}
               @if (_isSortApplied && _sortAppliedOn===colItem.field) {
                 @if (_sortType==='ASC') {
                   <span class="ivpt-sort-identifier"> &uarr;</span>
@@ -74,36 +69,20 @@
             class="ivpt-filter-cell ivpt-flex-cell"
             [style.min-width.px]="colItem.width"
           >
-            @if (colItem.hasFilter && filterConfig[colItem.field]['type']==='list') {
-              <button class="ivpt-filter-trigger" (click)="toggleFilterPopover($event)">
-                Filter
-              </button>
-              <div #filterPopover class="ivpt-filter-popover" aria-label="filter options" role="presentation">
-                <ul class="ivpt-filter-options">
-                  @for (optionItem of filterConfig[colItem.field]['options']; track optionItem) {
-                    <li class="ivpt-filter-option">
-                      <input 
-                        type="checkbox" 
-                        [name]="optionItem.option" 
-                        id="{{colItem.field}}_{{optionItem.option}}"
-                        [(ngModel)]="optionItem.isSelected"
-                      />
-                      <label class="filter-option-label" for="{{colItem.field}}_{{optionItem.option}}">
-                        {{optionItem.option}}
-                      </label>
-                    </li>
-                  }
-                </ul>
-                <button class="ivpt-filter-apply" (click)="applyFilter($event, 'list', colItem.field)">Apply</button>
-              </div>
+            @if (colItem.hasFilter && colItem.filterType==='options') {
+              <presentable-options-filter
+                [column]="colItem"
+                [taxonomy]="colItem.filterOptions"
+              >
+              </presentable-options-filter>
             }
-            @else if (colItem.hasFilter && filterConfig[colItem.field]['type']==='text') {
+            @else if (colItem.hasFilter && colItem.filteType==='text') {
               <input 
                 class="ivpt-filter-input"
                 type="text" 
                 [name]="colItem.field"
                 id="{{colItem.field}}"
-                [(ngModel)]="filterConfig[colItem.field]['keyword']" 
+                [(ngModel)]="filterConfig[colItem.field]['keyword']"
                 (keydown)="applyFilter($event, 'text', colItem.field)" 
               />
             }

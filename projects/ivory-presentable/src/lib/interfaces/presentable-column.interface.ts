@@ -1,6 +1,7 @@
 export interface PresentableColumn {
-  header?: string;
+  title?: string;
   field?: string;
+  alignment?: string;
   sortable?: boolean;
   resizable?: boolean;
   hasFilter?: boolean;
@@ -8,9 +9,4 @@ export interface PresentableColumn {
   width?: number | string;
   minWidth?: number | string;
   maxWidth?: number | string;
-  isCheckbox?: boolean;
-  widthGrow?: number;
-  forcedWidth?: boolean;
-  initialWidth?: number | string;
-  [x: string | number | symbol ]: unknown;
 }

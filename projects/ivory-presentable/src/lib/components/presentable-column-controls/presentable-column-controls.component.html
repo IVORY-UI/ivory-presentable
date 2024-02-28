@@ -1,0 +1,17 @@
+<div class="ivpt-column-controller">
+  <button class="ivpt-column-controller-handle" (click)="_showController=!_showController">
+    Columns
+  </button>
+  @if (_showController) {
+    <div #ivptController class="ivpt-column-controller-modal" role="presentation">
+      <ul class="ivpt-column-select-container" role="tree">
+        @for (colItem of columns; track colItem; let i=$index) {
+          <li class="ivpt-column-select-item" role="treeitem" [attr.aria-posinset]="i+1" tabindex="-1" [attr.aria-label]="colItem.title + ' Column'">
+            <input type="checkbox" id="colItem.field" value="colItem.field" [checked]="colItem.visible">
+            <label for="colItem.field">{{colItem.title}}</label>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</div>

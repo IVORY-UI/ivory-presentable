@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, Renderer2, Output, EventEmitter, ViewChild, OnInit, AfterViewInit } from '@angular/core';
+import { Component, Input, ElementRef, Renderer2, Output, EventEmitter, ViewChild, OnInit, AfterViewInit, ViewChildren, QueryList } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { PRESENTABLE_CONFIG } from './config/config';
@@ -35,29 +35,18 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
   _pagesTotal: number = 1;
   _recordsTotal: number = 0;
 
-  // Column Controls
-  _showController: boolean = false;
-
   // Grid rendering
   _isGridReady = false;
 
-  @Input() gridHeight!: number;
+  @Input() gridDefs: any;
   
   @Input() set columnDefs(value: any) {
     this.columns = value;
     for (const colItem of this.columns) {
-      if (
-        colItem['hasFilter'] &&
-        colItem['filterOptions'] !== undefined &&
-        colItem['filterOptions'] !== null &&
-        colItem['filterOptions'].length > 0
-      ) {
-        this.filterConfig[colItem.field] = {
-          type: 'list',
-          options: this.processFilterOptions(colItem['filterOptions']),
-        };
-      } else if (colItem['hasFilter']) {
-        this.filterConfig[colItem.field] = { type: 'text', keyword: '' };
+      if (colItem['hasFilter'] && colItem['filterType']==='options') {
+        this.filterConfig['colItem.field'] = {'values': []};
+      } else if (colItem['hasFilter'] && colItem['filterType']==='text') {
+        this.filterConfig['colItem.field'] = {'keyword': ''};
       }
     }
   }
@@ -87,17 +76,17 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
 
   @Output() recordsSelected = new EventEmitter();
 
-  @ViewChild('ivptController') ivptControllerRef: ElementRef | undefined;
-
   @ViewChild('ivptSelectAll') ivptSelectAllRef: ElementRef | undefined;
 
   @ViewChild('ivptContentBody') ivptContentBodyRef: ElementRef | undefined;
 
   @ViewChild('ivptFilters') ivptFiltersRef: ElementRef | undefined; 
 
+  @ViewChildren('ivptFilterPopover') ivptFilterPopoversRef: QueryList<ElementRef> | undefined;
+
   ngAfterViewInit() {
     if (this.ivptContentBodyRef) {
-      this.ivptContentBodyRef.nativeElement.style.height = (this.gridHeight -
+      this.ivptContentBodyRef.nativeElement.style.height = (this.gridDefs.height -
         (PRESENTABLE_CONFIG.headerSpace.height +
           PRESENTABLE_CONFIG.column.headHeight +
           PRESENTABLE_CONFIG.filterSpace.height +
@@ -171,20 +160,7 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
   }
 
   // Handles filter
-  processFilterOptions(arr: any) {
-    let temp = [];
-    for (const i of arr) {
-      temp.push({ option: i, isSelected: false });
-    }
-    return temp;
-  }
-
-  toggleFilterPopover($event: any) {
-    $event.target.parentElement.children[1].style['display'] =
-      $event.target.parentElement.children[1].style['display'] !== 'block'
-        ? 'block'
-        : 'none';
-  }
+  
 
   applyFilter($event: any, filterType: string, column: string) {
     if (filterType==='list') {
@@ -272,9 +248,5 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
     }
     this.recordsSelected.emit(this.selectedRows);
   }
-
-
-  // Handles columns controller
-  
 
 }
