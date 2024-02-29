@@ -1,0 +1,79 @@
+<div class="ivpt-records-summary" role="status">
+  {{((_page.current-1)*_records.perPage)+1}} to {{_page.current * _records.perPage}} of {{_records.total}}
+</div>
+
+<div class="ivpt-records-options" role="presentation">
+  <label for="records-per-page" aria-hidden="false">
+    Records per page: 
+  </label>
+  &nbsp;
+  <select name="perPageOptions" 
+    id="records-per-page" 
+    tabindex="0"
+    [(ngModel)]="_records.perPage" 
+    (change)="updatePerPageRecords()"
+  >
+    @for (p of _records.options; track p) {
+      <option [value]="p">
+        {{ p }}
+      </option>
+    }
+  </select>
+</div>
+
+<div class="ivpt-records-paging">
+  @if (_showPagination) {
+    <button type="button" 
+      aria-label="First page" 
+      tabindex="0"
+      class="ivpt-paginator-button" 
+      [disabled]="_page.current===1"
+      [attr.aria-disabled]="_page.current===1"
+      (click)="goto(1)"
+    >
+      &laquo;
+    </button>
+    
+    <button type="button" 
+      aria-label="Previous page" 
+      tabindex="0"
+      class="ivpt-paginator-button" 
+      [disabled]="_page.current===1"
+      [attr.aria-disabled]="_page.current===1" 
+      (click)="goto(_page.current-1)"
+    >
+      &lsaquo;
+    </button>
+
+    <input
+      class="ivpt-paging-input"
+      type="text"
+      size="2"
+      [(ngModel)]="_page.goto"
+      (keydown.enter)="goto(null)"
+    />
+    <span>{{ ' / '+_page.total }}</span>
+
+    <button type="button"
+      aria-label="Next page" 
+      tabindex="0"
+      class="ivpt-paginator-button" 
+      [disabled]="_page.current===_page.total" 
+      [attr.aria-disabled]="_page.current===_page.total" 
+      (click)="goto(_page.current+1)"
+    >
+      &rsaquo;
+    </button>
+
+    <button type="button"
+      aria-label="Last page" 
+      tabindex="0"
+      class="ivpt-paginator-button" 
+      [disabled]="_page.current===_page.total" 
+      [attr.aria-disabled]="_page.current===_page.total" 
+      (click)="goto(_page.total)"
+    >
+      &raquo;
+    </button>
+  }
+</div>

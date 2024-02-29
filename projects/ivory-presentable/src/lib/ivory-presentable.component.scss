@@ -76,16 +76,3 @@
     width: 100%;
   }
 }
-
-.ivpt-paginator {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  .ivpt-records {
-    padding: 0.5rem 0;
-  }
-  .ivpt-paginator-button {
-    @include button-culture;
-  }
-}

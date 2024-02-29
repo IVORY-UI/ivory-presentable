@@ -7,6 +7,7 @@ import { PresentableRowComponent } from './components/presentable-row/presentabl
 import { PresentableOptionsFilterComponent } from './components/presentable-options-filter/presentable-options-filter.component';
 import { PresentableColumnResizerComponent } from './components/presentable-column-resizer/presentable-column-resizer.component';
 import { PresentableColumnControlsComponent } from './components/presentable-column-controls/presentable-column-controls.component';
+import { PresentablePaginatorComponent } from './components/presentable-paginator/presentable-paginator.component';
 
 import { ClickOutsideDirective } from './helpers/click-outside.directive';
 
@@ -21,6 +22,7 @@ import { ClickOutsideDirective } from './helpers/click-outside.directive';
     PresentableOptionsFilterComponent,
     PresentableColumnResizerComponent,
     PresentableColumnControlsComponent,
+    PresentablePaginatorComponent,
     ClickOutsideDirective
   ],
   exports: [
@@ -29,6 +31,7 @@ import { ClickOutsideDirective } from './helpers/click-outside.directive';
     PresentableOptionsFilterComponent,
     PresentableColumnResizerComponent,
     PresentableColumnControlsComponent,
+    PresentablePaginatorComponent,
     ClickOutsideDirective
   ]
 })

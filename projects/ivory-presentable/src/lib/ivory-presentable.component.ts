@@ -27,12 +27,6 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
   _isFilterApplied = false;
   filterConfig: any = {};
 
-  // Pagination
-  _showPagination = false;
-  
-  _pageCurrent: number = 1;
-  _pageGoto: number = 1;
-  _pagesTotal: number = 1;
   _recordsTotal: number = 0;
 
   // Grid rendering
@@ -110,7 +104,7 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
       this.currVisibleData =  this.processedData;
     } else {
       this.resetPagination();
-      this.calculatePages(this.processedData.length);
+      //this.calculatePages(this.processedData.length);
       this.renderData(0, this.recordsPerPage);
     }
     this._isGridReady = true;
@@ -181,38 +175,12 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
     // Helper method to reset the applied filters
   }
 
-  // Handles Pagination
-  calculatePages(totalRecords: number) {
-    this._recordsTotal = totalRecords;
-    this._pagesTotal = Math.ceil(this._recordsTotal / this.recordsPerPage);
-    this._showPagination = this._recordsTotal > this.recordsPerPage;
-  }
-
-  updatePerPageRecords() {
-    this.resetPagination(); // Review: this logic needs to be changed
-    this._pagesTotal = Math.ceil(this._recordsTotal / this.recordsPerPage);
-    this.renderData(0, this.recordsPerPage);
-  }
-
-  goto(pageNumber: any) {
-    if (pageNumber!==null && pageNumber!==undefined && pageNumber!==this._pageCurrent) { 
-      console.log('Selected page - ', pageNumber);
-      let startRecord = (pageNumber-1) * this.recordsPerPage;
-      let endRecord = ((startRecord+this.recordsPerPage) > this._recordsTotal) ? this._recordsTotal : startRecord + this.recordsPerPage;
-      this.renderData(startRecord, endRecord);
-      this._pageGoto = this._pageCurrent = pageNumber;
-    } else {
-      if (this._pageGoto<1) {
-        this._pageGoto=1;
-      } else if (this._pageGoto>this._pagesTotal) {
-        this._pageGoto = this._pagesTotal;
-      }
-      this.goto(this._pageGoto);
-    }
+  onPaginationChange(data: any) {
+    this.renderData(data.from, data.to);
   }
 
   resetPagination() {
-    this._pageGoto = this._pageCurrent = 1;
+    console.log('Pagination has to be reset');
   }
 
   // Row Selection
