@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { FilterManagerService } from '../../services/filter-manager.service';
+import { FilterManagerService } from '../../../services/filter-manager.service';
 
 @Component({
   selector: 'presentable-options-filter',
@@ -23,8 +23,6 @@ export class PresentableOptionsFilterComponent {
     return this._taxonomy;
   }
 
-  @Output() filterEvent = new EventEmitter<any>();
-
   constructor(
     public filterManager: FilterManagerService
   ) {}
@@ -35,7 +33,7 @@ export class PresentableOptionsFilterComponent {
   }
 
   applyFilter() {
-    console.log('Filter applied');
+    
   }
 
 }

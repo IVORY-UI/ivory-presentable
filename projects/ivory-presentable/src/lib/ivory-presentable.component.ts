@@ -166,14 +166,14 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
   }
 
   // Handles filter
-  
-
   applyFilter($event: any, filterType: string, column: string) {
-    if (filterType==='list') {
-      $event.target.parentElement.style['display'] = 'none';
+    if (this.gridDefs.dataSource==='remote') {
+
+    } else if (this.gridDefs.dataSource==='local') {
+      
+      // Review: Logic to updated based on the data source is client side or server side
+      this.records = this.doQueryFilter(column, this.filterModel[column]['keyword']);
     }
-    // Review: Logic to updated based on the data source is client side or server side
-    this.records = this.doQueryFilter(column, this.filterModel[column]['keyword']);
   }
 
   doQueryFilter(column: string, query: string) {

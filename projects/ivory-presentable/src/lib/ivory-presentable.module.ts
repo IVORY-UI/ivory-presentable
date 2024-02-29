@@ -4,10 +4,14 @@ import { FormsModule } from '@angular/forms';
 
 import { IvoryPresentableComponent } from './ivory-presentable.component';
 import { PresentableRowComponent } from './components/presentable-row/presentable-row.component';
-import { PresentableOptionsFilterComponent } from './components/presentable-options-filter/presentable-options-filter.component';
+
 import { PresentableColumnResizerComponent } from './components/presentable-column-resizer/presentable-column-resizer.component';
 import { PresentableColumnControlsComponent } from './components/presentable-column-controls/presentable-column-controls.component';
 import { PresentablePaginatorComponent } from './components/presentable-paginator/presentable-paginator.component';
+
+// Filters
+import { PresentableTextFilterComponent } from './components/filters/presentable-text-filter/presentable-text-filter.component';
+import { PresentableOptionsFilterComponent } from './components/filters/presentable-options-filter/presentable-options-filter.component';
 
 import { ClickOutsideDirective } from './helpers/click-outside.directive';
 
@@ -19,6 +23,7 @@ import { ClickOutsideDirective } from './helpers/click-outside.directive';
   declarations: [
     IvoryPresentableComponent,
     PresentableRowComponent,
+    PresentableTextFilterComponent,
     PresentableOptionsFilterComponent,
     PresentableColumnResizerComponent,
     PresentableColumnControlsComponent,
@@ -28,6 +33,7 @@ import { ClickOutsideDirective } from './helpers/click-outside.directive';
   exports: [
     IvoryPresentableComponent,
     PresentableRowComponent,
+    PresentableTextFilterComponent,
     PresentableOptionsFilterComponent,
     PresentableColumnResizerComponent,
     PresentableColumnControlsComponent,

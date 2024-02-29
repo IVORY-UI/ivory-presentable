@@ -65,22 +65,17 @@
             class="ivpt-filter-cell ivpt-flex-cell"
             [style.min-width.px]="colItem.width"
           >
-            @if (colItem.hasFilter && colItem.filterType==='options') {
+            @if (colItem.hasFilter && colItem.filterType==='text') {
+              <presentable-text-filter
+                [column]="colItem"
+              ></presentable-text-filter>
+            }
+            @else if (colItem.hasFilter && colItem.filterType==='options') {
               <presentable-options-filter
                 [column]="colItem"
                 [taxonomy]="colItem.filterOptions"
               >
               </presentable-options-filter>
-            }
-            @else if (colItem.hasFilter && colItem.filteType==='text') {
-              <input 
-                class="ivpt-filter-input"
-                type="text" 
-                [name]="colItem.field"
-                id="{{colItem.field}}"
-                [(ngModel)]="filterModel[colItem.field]['keyword']"
-                (keydown)="applyFilter($event, 'text', colItem.field)" 
-              />
             }
           </div>
         }
