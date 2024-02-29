@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'ivory-presentable-row',
+  selector: 'presentable-row',
   templateUrl: './presentable-row.component.html',
   styleUrl: './presentable-row.component.scss'
 })
