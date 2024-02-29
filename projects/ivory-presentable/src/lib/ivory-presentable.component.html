@@ -93,13 +93,13 @@
       <!-- Table rows -->
       <div #ivptContentBody class="ivpt-content-body" role="rowgroup">
         @for (dataItem of currVisibleData; track dataItem; let i=$index) {
-          <ivory-presentable-row
+          <presentable-row
             [columns]="columns"
             [rowIndex]="i"
             [rowSelectionEnabled]="recordsSelectable"
             [rowData]="dataItem"
           >
-          </ivory-presentable-row>
+          </presentable-row>
         }
       </div>
 
@@ -107,90 +107,92 @@
     <!-- Datatable Content ends -->
 
     <!-- Datatable Paginator -->
-    @if (hasPagination) {
-      <div #ivptPaginator class="ivpt-paginator">
-        <div class="ivpt-records-summary" role="status">
-          {{((_pageCurrent-1)*recordsPerPage)+1}} to {{_pageCurrent * recordsPerPage}} of {{_recordsTotal}}
+    <div class="ivpt-footer">
+      @if (hasPagination) {
+        <div #ivptPaginator class="ivpt-paginator">
+          <div class="ivpt-records-summary" role="status">
+            {{((_pageCurrent-1)*recordsPerPage)+1}} to {{_pageCurrent * recordsPerPage}} of {{_recordsTotal}}
+          </div>
+    
+          <div class="ivpt-records-options" role="presentation">
+            <label for="folders-per-page" aria-hidden="false">
+              Records per page: 
+            </label>
+            <select name="perPageOptions" 
+              id="folders-per-page" 
+              tabindex="0"
+              [(ngModel)]="recordsPerPage" 
+              (change)="updatePerPageRecords()"
+            >
+              @for (p of recordsPerPageOptions; track p) {
+                <option [value]="p">
+                  {{ p }}
+                </option>
+              }
+            </select>
+          </div>
+    
+          @if (_showPagination) {
+          <div class="">
+            <button type="button" 
+              aria-label="First page" 
+              tabindex="0"
+              class="ivpt-paginator-button" 
+              [disabled]="_pageCurrent===1"
+              [attr.aria-disabled]="_pageCurrent===1"
+              (click)="goto(1)"
+            >
+              &laquo;
+            </button>
+            &nbsp;
+            <button type="button" 
+              aria-label="Previous page" 
+              tabindex="0"
+              class="ivpt-paginator-button" 
+              [disabled]="_pageCurrent===1"
+              [attr.aria-disabled]="_pageCurrent===1" 
+              (click)="goto(_pageCurrent-1)"
+            >
+              &lsaquo;
+            </button> &nbsp;
+            <input
+              class="pagination-current clr-input"
+              type="text"
+              size="2"
+              id="go-to"
+              [(ngModel)]="_pageGoto"
+              (keydown.enter)="goto(null)"
+            />
+            &nbsp;/&nbsp;
+            <span class="pages-total">
+              {{ _pagesTotal }}
+            </span>
+            &nbsp;
+            <button type="button"
+              aria-label="Next page" 
+              tabindex="0"
+              class="ivpt-paginator-button" 
+              [disabled]="_pageCurrent===_pagesTotal" 
+              [attr.aria-disabled]="_pageCurrent===_pagesTotal" 
+              (click)="goto(_pageCurrent + 1)"
+            >
+              &rsaquo;
+            </button>
+            &nbsp;
+            <button type="button"
+              aria-label="Last page" 
+              tabindex="0"
+              class="ivpt-paginator-button" 
+              [disabled]="_pageCurrent===_pagesTotal" 
+              [attr.aria-disabled]="_pageCurrent===_pagesTotal" 
+              (click)="goto(_pagesTotal)"
+            >
+              &raquo;
+            </button>
+          </div>
+          }
         </div>
-  
-        <div class="ivpt-records-options" role="presentation">
-          <label for="folders-per-page" aria-hidden="false">
-            Records per page: 
-          </label>
-          <select name="perPageOptions" 
-            id="folders-per-page" 
-            tabindex="0"
-            [(ngModel)]="recordsPerPage" 
-            (change)="updatePerPageRecords()"
-          >
-            @for (p of recordsPerPageOptions; track p) {
-              <option [value]="p">
-                {{ p }}
-              </option>
-            }
-          </select>
-        </div>
-  
-        @if (_showPagination) {
-        <div class="">
-          <button type="button" 
-            aria-label="First page" 
-            tabindex="0"
-            class="ivpt-paginator-button" 
-            [disabled]="_pageCurrent===1"
-            [attr.aria-disabled]="_pageCurrent===1"
-            (click)="goto(1)"
-          >
-            &laquo;
-          </button>
-          &nbsp;
-          <button type="button" 
-            aria-label="Previous page" 
-            tabindex="0"
-            class="ivpt-paginator-button" 
-            [disabled]="_pageCurrent===1"
-            [attr.aria-disabled]="_pageCurrent===1" 
-            (click)="goto(_pageCurrent-1)"
-          >
-            &lsaquo;
-          </button> &nbsp;
-          <input
-            class="pagination-current clr-input"
-            type="text"
-            size="2"
-            id="go-to"
-            [(ngModel)]="_pageGoto"
-            (keydown.enter)="goto(null)"
-          />
-          &nbsp;/&nbsp;
-          <span class="pages-total">
-            {{ _pagesTotal }}
-          </span>
-          &nbsp;
-          <button type="button"
-            aria-label="Next page" 
-            tabindex="0"
-            class="ivpt-paginator-button" 
-            [disabled]="_pageCurrent===_pagesTotal" 
-            [attr.aria-disabled]="_pageCurrent===_pagesTotal" 
-            (click)="goto(_pageCurrent + 1)"
-          >
-            &rsaquo;
-          </button>
-          &nbsp;
-          <button type="button"
-            aria-label="Last page" 
-            tabindex="0"
-            class="ivpt-paginator-button" 
-            [disabled]="_pageCurrent===_pagesTotal" 
-            [attr.aria-disabled]="_pageCurrent===_pagesTotal" 
-            (click)="goto(_pagesTotal)"
-          >
-            &raquo;
-          </button>
-        </div>
-        }
-      </div>
-    }
+      }
+    </div>
   </ng-template>
 </div>

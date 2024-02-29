@@ -21,6 +21,14 @@
     position: relative;
     overflow: scroll;
   }
+  .ivpt-footer {
+    position: relative;
+    display: flex;
+    height: 45px;
+    border-top: 1px solid $ivpt-border-color-standard;
+    padding: 0 1rem;
+    border-radius: 0 0 0.5rem 0.5rem;
+  }
 }
 
 .ivpt-content-head {
@@ -70,14 +78,10 @@
 }
 
 .ivpt-paginator {
-  position: relative;
   display: flex;
-  height: 45px;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid $ivpt-border-color-standard;
-  padding: 0 1rem;
-  border-radius: 0 0 0.5rem 0.5rem;
   .ivpt-records {
     padding: 0.5rem 0;
   }
