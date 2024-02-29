@@ -11,9 +11,6 @@ import { PageManagerService } from './services/page-manager.service';
 })
 export class IvoryPresentableComponent implements OnInit, AfterViewInit {
 
-  // Columns
-  columns: any;
-
   // Records Data
   dataTrueCopy: any;
   processedData: any;
@@ -41,25 +38,7 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
 
   @Input() gridDefs: any;
   
-  @Input() set columnDefs(value: any) {
-    this.columns = value;
-    for (const colItem of this.columns) {
-      if (colItem['hasFilter'] && colItem['filterType']==='options') {
-        this.filterModel['colItem.field'] = {
-          'filterType': 'options',
-          'values': []
-        };
-      } else if (colItem['hasFilter'] && colItem['filterType']==='text') {
-        this.filterModel['colItem.field'] = {
-          'filterType': 'text',
-          'keyword': ''
-        };
-      }
-    }
-  }
-  get columnDefs() {
-    return this.columns;
-  }
+  @Input() columnDefs: any;
 
   @Input() columnControls: boolean = false;
 

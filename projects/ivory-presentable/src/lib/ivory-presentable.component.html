@@ -7,7 +7,7 @@
     <div class="ivpt-header">
       @if (columnControls) {
         <presentable-column-controls
-          [columns]="columns"
+          [columns]="columnDefs"
         ></presentable-column-controls>
       }
     </div>
@@ -29,7 +29,7 @@
             />
           </div>
         }
-        @for (colItem of columns; track colItem; let i=$index) {
+        @for (colItem of columnDefs; track colItem; let i=$index) {
           <div 
             class="ivpt-head-cell ivpt-flex-cell" 
             role="columnheader" 
@@ -60,7 +60,7 @@
         @if (recordSelection) {
           <div class="ivpt-filter-cell ivpt-flex-cell" style="max-width: 36px;"></div>
         }
-        @for (colItem of columns; track colItem; let i=$index) {
+        @for (colItem of columnDefs; track colItem; let i=$index) {
           <div 
             class="ivpt-filter-cell ivpt-flex-cell"
             [style.min-width.px]="colItem.width"
@@ -85,7 +85,7 @@
       <div #ivptContentBody class="ivpt-content-body" role="rowgroup">
         @for (dataItem of currVisibleData; track dataItem; let i=$index) {
           <presentable-row
-            [columns]="columns"
+            [columns]="columnDefs"
             [rowIndex]="i"
             [rowSelectionEnabled]="recordSelection"
             [rowData]="dataItem"
