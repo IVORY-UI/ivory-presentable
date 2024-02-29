@@ -1,0 +1,18 @@
+@import '../../styles/variables';
+@import '../../styles/reference';
+@import '../../styles/component';
+
+.ivpt-content-row {
+  @include row-culture;
+  border-bottom: 1px solid $ivpt-border-color-standard;
+  &:hover {
+    background-color: #eaf5ff;
+  }
+  &:last-child {
+    border-bottom: none;
+  }
+  .ivpt-content-cell {
+    @include cell-culture;
+    @include cell-wrap-culture;
+  }
+}

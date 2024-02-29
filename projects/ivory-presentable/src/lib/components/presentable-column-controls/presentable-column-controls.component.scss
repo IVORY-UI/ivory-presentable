@@ -1,0 +1,36 @@
+@import '../../styles/variables';
+@import '../../styles/reference';
+@import '../../styles/component';
+
+.ivpt-column-controller {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  padding: 0 1rem;
+  &-handle {
+    @include button-culture;
+  }
+  &-modal {
+    position: absolute;
+    top: 45px;
+    background-color: #FFFFFF;
+    width: 15rem;
+    z-index: 9999;
+    right: 0;
+    height: calc(100% - 45px);
+    border: 1px solid $ivpt-border-color-standard;
+    border-radius: 0 0 0.4rem 0;
+  }
+  .ivpt-column-select-container {
+    position: relative;
+    margin: 0;
+    padding: 1rem;
+  }
+  .ivpt-column-select-item {
+    list-style: none;
+    line-height: 1.5rem;
+    label {
+      padding-left: 0.5rem;
+    }
+  }
+}

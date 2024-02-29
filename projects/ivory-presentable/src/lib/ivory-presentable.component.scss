@@ -1,0 +1,75 @@
+@import './styles/variables';
+@import './styles/reference';
+@import './styles/component';
+
+.ivpt-container {
+  position: relative;
+  width: 100%;
+  border: 1px solid $ivpt-border-color-standard;
+  border-radius: 0.5rem;
+  .ivpt-header {
+    display: flex;
+    justify-content: flex-end;
+    height: 45px;
+    border-bottom: 1px solid $ivpt-border-color-standard;
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+  .ivpt-content {
+    position: relative;
+  }
+  .ivpt-content-body {
+    position: relative;
+    overflow: scroll;
+  }
+  .ivpt-footer {
+    position: relative;
+    display: flex;
+    height: 45px;
+    border-top: 1px solid $ivpt-border-color-standard;
+    padding: 0 1rem;
+    border-radius: 0 0 0.5rem 0.5rem;
+  }
+}
+
+.ivpt-content-head {
+  @include row-culture;
+  height: 45px;
+  border-bottom: 1px solid $ivpt-border-color-standard;
+  background-color: $ivpt-background-standard;
+}
+.ivpt-selectall-cell {
+  display: flex;
+  padding: 0 0.5rem;
+}
+.ivpt-head-cell {
+  display: flex;
+  cursor: pointer;
+  justify-content: space-between;
+  align-items: center;
+  &:first-child {
+    border-left: none;
+  }
+}
+.ivpt-column-title {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 0.5rem;
+  line-height: 2.5rem;
+}
+.ivpt-column-ext {
+  display: flex;
+  .ivpt-sort-identifier {
+    padding: 0 5px;
+  }
+}
+
+.ivpt-filters-row {
+  @include row-culture;
+  height: 45px;
+  border-bottom: 1px solid $ivpt-border-color-standard;
+  .ivpt-filter-cell {
+    @include cell-culture;
+    position: relative;
+  }
+}

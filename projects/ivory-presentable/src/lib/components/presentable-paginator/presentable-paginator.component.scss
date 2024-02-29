@@ -1,0 +1,30 @@
+@import '../../styles/reference';
+
+%paging-block-culture {
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+:host {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.ivpt-records-summary {
+  @extend %paging-block-culture;
+}
+.ivpt-records-options {
+  @extend %paging-block-culture;
+  justify-content: center;
+}
+.ivpt-records-paging {
+  @extend %paging-block-culture;
+  justify-content: flex-end;
+}
+.ivpt-paging-input {
+  margin: 0 0 0 12px;
+}
+.ivpt-paginator-button {
+  @include button-culture;
+  margin: 0 0 0 12px;
+}

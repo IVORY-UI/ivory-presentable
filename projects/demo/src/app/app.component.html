@@ -1,0 +1,14 @@
+<div class="page-container">
+  <p>Demo</p>
+  <ivory-presentable
+    [gridDefs]="tableConfig"
+    [columnDefs]="tableColumns"
+    [columnControls]="tableControls"
+    [records]="tableData"
+    [pagination]="tablePagination"
+    [recordsPerPage]="tablePageSize"
+    [recordsPerPageOptions]="tablePageSizeOptions"
+    [recordSelection]="tableSelection"
+    (recordsSelected)="onRecordsSelected($event)"
+  ></ivory-presentable>
+</div>

@@ -1,0 +1,31 @@
+<button 
+  class="ivpt-filter-trigger"
+  [id]="'filter_handle_'+column.field"
+  (click)="toggleFilterPopover($event)"
+>
+  Filter
+</button>
+@if (_showPopover) {
+  <div
+    class="ivpt-filter-popover" 
+    aria-label="filter options" 
+    role="presentation"
+  >
+    <ul class="ivpt-filter-options">
+      @for (optionItem of _taxonomy; track optionItem) {
+        <li class="ivpt-filter-option">
+          <input 
+            type="checkbox" 
+            [name]="optionItem.option" 
+            id="{{column.field}}_{{optionItem.option}}"
+            [(ngModel)]="optionItem.isSelected"
+          />
+          <label class="filter-option-label" for="{{column.field}}_{{optionItem.option}}">
+            {{optionItem.option}}
+          </label>
+        </li>
+      }
+    </ul>
+    <button class="ivpt-filter-apply" (click)="applyFilter()">Apply</button>
+  </div>
+}

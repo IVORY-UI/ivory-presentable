@@ -1,0 +1,27 @@
+@import '../../../styles/variables';
+@import '../../../styles/reference';
+@import '../../../styles/component';
+
+.ivpt-filter-popover {
+  display: block;
+  position: absolute;
+  top: 100%;
+  background: #fff;
+  border: 1px solid $ivpt-border-color-standard;
+  z-index: 999;
+  padding: 1rem;
+  min-width: 200px;
+}
+.ivpt-filter-options {
+  padding: 0;
+  margin: 0 0 16px 0;
+  max-height: 200px;
+  overflow: scroll;
+}
+.ivpt-filter-option {
+  list-style: none;
+  line-height: 1.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,0 +1,116 @@
+<div class="ivpt-container" [ngStyle]="{ 'height.px': gridDefs.height }">
+  @if (!_isGridReady) {
+    <ng-container *ngTemplateOutlet="presentableFallbackTemplate"></ng-container>
+  }
+  @else {
+    <!-- Datatable Header -->
+    <div class="ivpt-header">
+      @if (columnControls) {
+        <presentable-column-controls
+          [columns]="columnDefs"
+        ></presentable-column-controls>
+      }
+    </div>
+
+    <!-- Datatable Content -->
+    <div class="ivpt-content">
+
+      <!-- Column headings of the table -->
+      <div class="ivpt-content-head" role="row" aria-rowindex="1">
+        @if (recordSelection) {
+          <div
+            class="ivpt-selectall-cell"
+          >
+            <input #ivptSelectAll type="checkbox"
+              class="ivpt-all-select-checkbox"
+              tabindex="-1"
+              id="selectall"
+              (change)="whenSelectAll($event)"
+            />
+          </div>
+        }
+        @for (colItem of columnDefs; track colItem; let i=$index) {
+          <div 
+            class="ivpt-head-cell ivpt-flex-cell" 
+            role="columnheader" 
+            attr.aria-colindex="{{i+1}}" 
+            (click)="doSort(colItem.field)"
+            [style.min-width.px]="colItem.width"
+          >
+            <div class="ivpt-column-title">
+              {{colItem.title}}
+              @if (_isSortApplied && _sortAppliedOn===colItem.field) {
+                @if (_sortType==='ASC') {
+                  <span class="ivpt-sort-identifier"> &uarr;</span>
+                }
+                @else if (_sortType==='DESC') {
+                  <span class="ivpt-sort-identifier"> &darr;</span>
+                }
+              }
+            </div>
+            <div class="ivpt-column-ext">
+              <presentable-column-resizer></presentable-column-resizer>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Filter space for each column  -->
+      <div class="ivpt-filters-row">
+        @if (recordSelection) {
+          <div class="ivpt-filter-cell ivpt-flex-cell" style="max-width: 36px;"></div>
+        }
+        @for (colItem of columnDefs; track colItem; let i=$index) {
+          <div 
+            class="ivpt-filter-cell ivpt-flex-cell"
+            [style.min-width.px]="colItem.width"
+          >
+            @if (colItem.hasFilter && colItem.filterType==='text') {
+              <presentable-text-filter
+                [column]="colItem"
+              ></presentable-text-filter>
+            }
+            @else if (colItem.hasFilter && colItem.filterType==='options') {
+              <presentable-options-filter
+                [column]="colItem"
+                [taxonomy]="colItem.filterOptions"
+              >
+              </presentable-options-filter>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Table rows -->
+      <div #ivptContentBody class="ivpt-content-body" role="rowgroup">
+        @for (dataItem of currVisibleData; track dataItem; let i=$index) {
+          <presentable-row
+            [columns]="columnDefs"
+            [rowIndex]="i"
+            [rowSelectionEnabled]="recordSelection"
+            [rowData]="dataItem"
+          >
+          </presentable-row>
+        }
+      </div>
+
+    </div>
+
+    <!-- Datatable Footer -->
+    <div class="ivpt-footer">
+      @if (pagination) {
+        <presentable-paginator
+          [recordsPerPageOptions]="recordsPerPageOptions"
+          [recordsPerPage]="recordsPerPage"
+          [recordsTotal]="_recordsTotal"
+          (pageChange)="onPaginationChange($event)"
+        >
+        </presentable-paginator>
+      }
+    </div>
+  }
+
+  <ng-template #presentableFallbackTemplate>
+    <div>Loading</div>
+  </ng-template>
+</div>
