@@ -74,10 +74,6 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
 
   @ViewChild('ivptContentBody') ivptContentBodyRef: ElementRef | undefined;
 
-  @ViewChild('ivptFilters') ivptFiltersRef: ElementRef | undefined; 
-
-  @ViewChildren('ivptFilterPopover') ivptFilterPopoversRef: QueryList<ElementRef> | undefined;
-
   ngAfterViewInit() {
     if (this.ivptContentBodyRef) {
       this.ivptContentBodyRef.nativeElement.style.height = (this.gridDefs.height -

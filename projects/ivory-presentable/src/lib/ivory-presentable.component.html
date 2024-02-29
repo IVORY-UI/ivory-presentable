@@ -1,12 +1,8 @@
 <div class="ivpt-container" [ngStyle]="{ 'height.px': gridDefs.height }">
   @if (!_isGridReady) {
-    <div>Loading</div>
+    <ng-container *ngTemplateOutlet="presentableFallbackTemplate"></ng-container>
   }
   @else {
-    <ng-container *ngTemplateOutlet="dtPrimeTemplate"></ng-container>
-  }
-
-  <ng-template #dtPrimeTemplate>
     <!-- Datatable Header -->
     <div class="ivpt-header">
       @if (columnControls) {
@@ -16,7 +12,7 @@
       }
     </div>
 
-    <!-- Datatable Content starts -->
+    <!-- Datatable Content -->
     <div class="ivpt-content">
 
       <!-- Column headings of the table -->
@@ -60,7 +56,7 @@
       </div>
 
       <!-- Filter space for each column  -->
-      <div #ivpttFilters class="ivpt-filters-row">
+      <div class="ivpt-filters-row">
         @if (recordsSelectable) {
           <div class="ivpt-filter-cell ivpt-flex-cell" style="max-width: 36px;"></div>
         }
@@ -104,9 +100,8 @@
       </div>
 
     </div>
-    <!-- Datatable Content ends -->
 
-    <!-- Datatable Paginator -->
+    <!-- Datatable Footer -->
     <div class="ivpt-footer">
       @if (hasPagination) {
         <presentable-paginator
@@ -118,5 +113,9 @@
         </presentable-paginator>
       }
     </div>
+  }
+
+  <ng-template #presentableFallbackTemplate>
+    <div>Loading</div>
   </ng-template>
 </div>
