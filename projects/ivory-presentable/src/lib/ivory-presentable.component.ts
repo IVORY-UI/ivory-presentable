@@ -2,6 +2,7 @@ import { Component, Input, ElementRef, Renderer2, Output, EventEmitter, ViewChil
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { PRESENTABLE_CONFIG } from './config/config';
+import { PageManagerService } from './services/page-manager.service';
 
 @Component({
   selector: 'ivory-presentable',
@@ -25,12 +26,18 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
 
   // Filtering
   _isFilterApplied = false;
-  filterConfig: any = {};
+  filterModel: any = {};
 
   _recordsTotal: number = 0;
 
   // Grid rendering
   _isGridReady = false;
+
+  // data params when the data source is remote (server-side)
+  dataParams: any = {
+    page: {},
+    filter: {}
+  };
 
   @Input() gridDefs: any;
   
@@ -38,9 +45,15 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
     this.columns = value;
     for (const colItem of this.columns) {
       if (colItem['hasFilter'] && colItem['filterType']==='options') {
-        this.filterConfig['colItem.field'] = {'values': []};
+        this.filterModel['colItem.field'] = {
+          'filterType': 'options',
+          'values': []
+        };
       } else if (colItem['hasFilter'] && colItem['filterType']==='text') {
-        this.filterConfig['colItem.field'] = {'keyword': ''};
+        this.filterModel['colItem.field'] = {
+          'filterType': 'text',
+          'keyword': ''
+        };
       }
     }
   }
@@ -60,13 +73,13 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
     return this.dataTrueCopy;
   }
 
-  @Input() hasPagination: boolean = false;
+  @Input() pagination: boolean = false;
 
   @Input() recordsPerPage: number = 0;
 
   @Input() recordsPerPageOptions: any;
 
-  @Input() recordsSelectable: boolean = false;
+  @Input() recordSelection: boolean = false;
 
   @Output() recordsSelected = new EventEmitter();
 
@@ -87,7 +100,8 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
   constructor(
     private renderer: Renderer2,
     private el: ElementRef,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    public pageManager: PageManagerService
   ) {}
 
   ngOnInit() {
@@ -95,15 +109,17 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
   }
 
   processData() {
-    this.processedData = structuredClone(this.dataTrueCopy);
-    if (!this.hasPagination) {
-      this.currVisibleData =  this.processedData;
-    } else {
-      this.resetPagination();
-      //this.calculatePages(this.processedData.length);
-      this.renderData(0, this.recordsPerPage);
+    if (this.gridDefs.dataSource==='remote') {
+
+    } else if (this.gridDefs.dataSource==='local') {
+      this.processedData = structuredClone(this.dataTrueCopy);
+      if (!this.pagination) {
+        this.currVisibleData =  this.processedData;
+      } else {
+        this.renderData(0, this.recordsPerPage);
+      }
+      this._isGridReady = true;
     }
-    this._isGridReady = true;
   }
 
   renderData(from: number, to: number) {
@@ -157,7 +173,7 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
       $event.target.parentElement.style['display'] = 'none';
     }
     // Review: Logic to updated based on the data source is client side or server side
-    this.records = this.doQueryFilter(column, this.filterConfig[column]['keyword']);
+    this.records = this.doQueryFilter(column, this.filterModel[column]['keyword']);
   }
 
   doQueryFilter(column: string, query: string) {
@@ -172,11 +188,15 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
   }
 
   onPaginationChange(data: any) {
-    this.renderData(data.from, data.to);
+    if (this.gridDefs.dataSource==='remote') {
+
+    } else if (this.gridDefs.dataSource==='local') {
+      this.renderData(data.from, data.to);
+    }
   }
 
   resetPagination() {
-    console.log('Pagination has to be reset');
+    this.pageManager.updateCurrentPage(1);
   }
 
   // Row Selection
@@ -195,7 +215,7 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
   }
 
   whenSelectRow($event: any, row: any) {
-    if (this.recordsSelectable) {
+    if (this.recordSelection) {
       if ($event.target.checked) {
         row['dtSelected'] = true;
         this.selectedRows.push(row);

@@ -17,7 +17,7 @@
 
       <!-- Column headings of the table -->
       <div class="ivpt-content-head" role="row" aria-rowindex="1">
-        @if (recordsSelectable) {
+        @if (recordSelection) {
           <div
             class="ivpt-selectall-cell"
           >
@@ -57,7 +57,7 @@
 
       <!-- Filter space for each column  -->
       <div class="ivpt-filters-row">
-        @if (recordsSelectable) {
+        @if (recordSelection) {
           <div class="ivpt-filter-cell ivpt-flex-cell" style="max-width: 36px;"></div>
         }
         @for (colItem of columns; track colItem; let i=$index) {
@@ -78,7 +78,7 @@
                 type="text" 
                 [name]="colItem.field"
                 id="{{colItem.field}}"
-                [(ngModel)]="filterConfig[colItem.field]['keyword']"
+                [(ngModel)]="filterModel[colItem.field]['keyword']"
                 (keydown)="applyFilter($event, 'text', colItem.field)" 
               />
             }
@@ -92,7 +92,7 @@
           <presentable-row
             [columns]="columns"
             [rowIndex]="i"
-            [rowSelectionEnabled]="recordsSelectable"
+            [rowSelectionEnabled]="recordSelection"
             [rowData]="dataItem"
           >
           </presentable-row>
@@ -103,7 +103,7 @@
 
     <!-- Datatable Footer -->
     <div class="ivpt-footer">
-      @if (hasPagination) {
+      @if (pagination) {
         <presentable-paginator
           [recordsPerPageOptions]="recordsPerPageOptions"
           [recordsPerPage]="recordsPerPage"

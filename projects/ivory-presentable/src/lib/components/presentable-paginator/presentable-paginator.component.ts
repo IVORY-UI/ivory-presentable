@@ -1,5 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
+import { PageManagerService } from '../../services/page-manager.service';
+
 @Component({
   selector: 'presentable-paginator',
   templateUrl: './presentable-paginator.component.html',
@@ -34,6 +36,15 @@ export class PresentablePaginatorComponent {
 
   @Output() pageChange: EventEmitter<any> = new EventEmitter();
 
+  constructor(
+    public pageManager: PageManagerService
+  ) {}
+
+  ngOnInit() {
+    this.pageManager.currentPage$.subscribe((value: number) => {
+      this._page.current = this._page.goto = value;
+    });
+  }
 
   updatePerPageRecords() {
     this._page.goto = this._page.current = 1;

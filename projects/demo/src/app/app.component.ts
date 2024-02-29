@@ -15,7 +15,8 @@ export class AppComponent implements OnInit, OnDestroy {
   
   public tableConfig = {
     height: 600,
-    style: 'standard'
+    style: 'standard',
+    dataSource: 'local'
   };
   public tableColumns = [
     { 
