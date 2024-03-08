@@ -7,7 +7,8 @@ export class ElementManagerService {
   datagrid: HTMLElement | undefined;
   datagridHeader: HTMLElement | undefined;
   datagridBody: HTMLElement | undefined;
-
+  datagridRecordSelection: HTMLElement | undefined;
+  
   constructor() { }
 
   registerDatagridEl(datagrid: HTMLElement) {
@@ -28,6 +29,14 @@ export class ElementManagerService {
 
   getDatagridHeaderEl(): HTMLElement | undefined {
     return this.datagridHeader;
+  }
+
+  registerDatagridRecordSelectionEl(datagridHeader: HTMLElement) {
+    this.datagridRecordSelection = datagridHeader;
+  }
+
+  getDatagridRecordSelectionEl(): HTMLElement | undefined {
+    return this.datagridRecordSelection;
   }
 
   getDatagridHeaderElDimenstions(): any | undefined {

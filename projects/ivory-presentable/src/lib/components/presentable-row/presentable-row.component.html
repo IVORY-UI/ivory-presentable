@@ -5,8 +5,8 @@
   attr.row-index="{{rowIndex}}"
 >
   @if (rowSelectionEnabled) {
-    <div class="ivpt-content-cell" role="gridcell">
-      <div class="ivpt-row-select" role="presentation">
+    <div class="ivpt-content-cell" style="width: 36px;" role="gridcell">
+      <div class="ivpt-row-select" role="presentation" style="width: inherit;">
         <input type="checkbox"
           class="ivpt-row-select-checkbox"
           tabindex="-1"
@@ -19,10 +19,10 @@
   }
   @for (colItem of columns; track colItem; let i=$index) {
     <div 
-      class="ivpt-content-cell ivpt-flex-cell" 
+      class="ivpt-content-cell" 
       role="gridcell" 
       attr.aria-colindex="{{i+1}}" 
-      [style.min-width.px]="colItem.width"
+      [style.width.px]="colItem.width"
     >
       {{rowData[colItem.field]}}
     </div>  
