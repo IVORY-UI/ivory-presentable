@@ -36,6 +36,11 @@
 .ivpt-content-head {
   @include row-culture;
   height: 45px;
+}
+.ivpt-selectall-cell {
+  display: flex;
+  width: 36px;
+  justify-content: center;
   border-bottom: 1px solid $ivpt-border-color-standard;
   background-color: $ivpt-background-standard;
 }
@@ -46,15 +51,11 @@
   align-items: center;
   position: relative;
   flex-shrink: 0;
+  border-bottom: 1px solid $ivpt-border-color-standard;
+  background-color: $ivpt-background-standard;
   &:first-child {
     border-left: none;
   }
-  // .ivpt-resize-handle {
-  //   top: 0px;
-  //   position: absolute;
-  //   right: 0px;
-  //   z-index: 1;
-  // }
 }
 .ivpt-column-title {
   display: flex;

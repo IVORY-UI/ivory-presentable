@@ -72,7 +72,7 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
 
   @Output() recordsSelected = new EventEmitter();
 
-  @ViewChild('ivptSelectAll') ivptSelectAllRef: ElementRef | undefined;
+  @ViewChild('ivptSelectAll') ivptSelectAllRef!: ElementRef;
 
   @ViewChild('ivptContentBody') ivptContentBodyRef: ElementRef | undefined;
 
@@ -82,12 +82,10 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
   
   @ViewChild('datagridBodyWrapper') datagridBodyWrapper!: ElementRef;
 
-  @ViewChild('recordSelectionWrapper') recordSelectionWrapper!: ElementRef;
-
   ngAfterViewInit() {
     this.elementManager.registerDatagridEl(this.datagridWrapper.nativeElement);
     this.elementManager.registerDatagridHeaderEl(this.datagridHeaderWrapper.nativeElement);
-    this.elementManager.registerDatagridRecordSelectionEl(this.recordSelectionWrapper.nativeElement);
+    this.elementManager.registerDatagridSelectAllEl(this.ivptSelectAllRef.nativeElement);
     this.elementManager.registerDatagridBodyEl(this.datagridBodyWrapper.nativeElement);
 
     if (this.ivptContentBodyRef) {

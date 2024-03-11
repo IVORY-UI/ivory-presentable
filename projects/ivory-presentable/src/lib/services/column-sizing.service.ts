@@ -33,7 +33,7 @@ export class ColumnSizingService {
 
   getAvailableWidth(columns: any) {
     let headerEl = this.elementManager.getDatagridEl();
-    let recordSelectionEl = this.elementManager.getDatagridRecordSelectionEl();
+    let recordSelectionEl = this.elementManager.getDatagridSelectAllEl();
     return (headerEl as HTMLElement).getBoundingClientRect()?.width - this.getColumnsTotWidth(columns) - (recordSelectionEl as HTMLElement).getBoundingClientRect()?.width;
   }
 
