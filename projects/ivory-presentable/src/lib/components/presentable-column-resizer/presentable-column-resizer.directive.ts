@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { AfterViewInit, Directive, ElementRef, EventEmitter, HostBinding, HostListener, Inject, Input, NgZone, OnInit, Output, inject } from '@angular/core';
-import { Subject, fromEvent, map, switchMap, takeUntil } from 'rxjs';
+import { Subject, fromEvent, map, switchMap, takeUntil, tap } from 'rxjs';
 
 import { ColumnSizingService } from '../../services/column-sizing.service';
 import { ElementManagerService } from '../../services/element-manager.service';
@@ -75,18 +75,18 @@ export class ColumnResizeDirective implements OnInit, AfterViewInit{
   }
 
   addColumnResizeStyle() {
-    if (this.isResizing) {
-      const datagridHeight = this.elementManager.getDatagridElDimenstions()?.height;
-      this.elementRef.nativeElement.style.height = `${datagridHeight - 10}px`;
-    } else {
-      this.elementRef.nativeElement.style.height = `${this.defaultResizerHeight}px`;
-    }
+    // const datagridHeight = this.elementManager.getDatagridElDimenstions()?.height;
+    // if (this.isResizing) {
+    //   this.elementRef.nativeElement.style.height = `${datagridHeight - 10}px`;
+    // } else {
+    //   this.elementRef.nativeElement.style.height = `${datagridHeight}px`;
+    // }
   }
 
   @HostListener('mousedown', ['$event'])
   mouseDownEvent(event: MouseEvent) {
     event.preventDefault();
-    this.columnContainerElement = (event.target as HTMLElement).parentElement?.parentElement;
+    this.columnContainerElement = (event.target as HTMLElement).parentElement?.parentElement?.parentElement;
     this.columnOffsetLeft = event.clientX - (this.columnContainerElement?.getBoundingClientRect()?.left || 0);
     this.mouseDown.next(event);
   }

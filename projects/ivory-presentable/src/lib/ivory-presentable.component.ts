@@ -1,8 +1,11 @@
-import { Component, Input, ElementRef, Renderer2, Output, EventEmitter, ViewChild, OnInit, AfterViewInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, Input, ElementRef, Renderer2, Output, EventEmitter, ViewChild, OnInit, AfterViewInit, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { PRESENTABLE_CONFIG } from './config/config';
 import { PageManagerService } from './services/page-manager.service';
+import { ColumnSizingService } from './services/column-sizing.service';
+import { ElementManagerService } from './services/element-manager.service';
+import { delay } from 'rxjs';
 
 @Component({
   selector: 'ivory-presentable',
@@ -38,7 +41,14 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
 
   @Input() gridDefs: any;
   
-  @Input() columnDefs: any;
+  // @Input() columnDefs: any;
+  _columnDefs: any;
+  @Input() set columnDefs(columnDefs: any) {
+    this._columnDefs = this.columnSizing.processColumnOptions(columnDefs);
+  }
+  get columnDefs() {
+    return this._columnDefs;
+  }
 
   @Input() columnControls: boolean = false;
 
@@ -66,7 +76,20 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
 
   @ViewChild('ivptContentBody') ivptContentBodyRef: ElementRef | undefined;
 
+  @ViewChild('datagridWrapper') datagridWrapper!: ElementRef;
+
+  @ViewChild('datagridHeaderWrapper') datagridHeaderWrapper!: ElementRef;
+  
+  @ViewChild('datagridBodyWrapper') datagridBodyWrapper!: ElementRef;
+
+  @ViewChild('recordSelectionWrapper') recordSelectionWrapper!: ElementRef;
+
   ngAfterViewInit() {
+    this.elementManager.registerDatagridEl(this.datagridWrapper.nativeElement);
+    this.elementManager.registerDatagridHeaderEl(this.datagridHeaderWrapper.nativeElement);
+    this.elementManager.registerDatagridRecordSelectionEl(this.recordSelectionWrapper.nativeElement);
+    this.elementManager.registerDatagridBodyEl(this.datagridBodyWrapper.nativeElement);
+
     if (this.ivptContentBodyRef) {
       this.ivptContentBodyRef.nativeElement.style.height = (this.gridDefs.height -
         (PRESENTABLE_CONFIG.headerSpace.height +
@@ -74,17 +97,21 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
           PRESENTABLE_CONFIG.filterSpace.height +
           PRESENTABLE_CONFIG.paginator.height))+'px';
     }
+    this.columnSizing.reCalcWidth.next(true);
   }
 
   constructor(
     private renderer: Renderer2,
     private el: ElementRef,
     private domSanitizer: DomSanitizer,
+    private cdr: ChangeDetectorRef,
+    private columnSizing: ColumnSizingService,
+    private elementManager: ElementManagerService,
     public pageManager: PageManagerService
   ) {}
 
   ngOnInit() {
-    
+    this.addListeners();
   }
 
   processData() {
@@ -99,6 +126,9 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
       }
       this._isGridReady = true;
     }
+    setTimeout(() => {
+      this.columnSizing.reCalcWidth.next(true);
+    }, 2000)
   }
 
   renderData(from: number, to: number) {
@@ -212,4 +242,16 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
     this.recordsSelected.emit(this.selectedRows);
   }
 
+  addListeners() {
+    this.columnSizing.reCalcWidth.pipe(
+      delay(100)
+    ).subscribe(() => {
+      this.columnSizing.reCalcColumnWidth(this.columnDefs);
+      this.cdr.detectChanges();
+    })
+  }
+
+  updatedColumnWidth(colItem: any, width: any) {
+    colItem.width = width;
+  }
 }
