@@ -7,8 +7,7 @@ export class ElementManagerService {
   datagrid: HTMLElement | undefined;
   datagridHeader: HTMLElement | undefined;
   datagridBody: HTMLElement | undefined;
-
-  constructor() { }
+  datagridSelectAll: HTMLElement | undefined;
 
   registerDatagridEl(datagrid: HTMLElement) {
     this.datagrid = datagrid;
@@ -18,7 +17,7 @@ export class ElementManagerService {
     return this.datagrid;
   }
 
-  getDatagridElDimenstions(): any | undefined {
+  getDatagridElDimenstions(): any {
     return this.datagrid?.getBoundingClientRect() || {};
   }
 
@@ -30,7 +29,15 @@ export class ElementManagerService {
     return this.datagridHeader;
   }
 
-  getDatagridHeaderElDimenstions(): any | undefined {
+  registerDatagridSelectAllEl(datagridHeader: HTMLElement) {
+    this.datagridSelectAll = datagridHeader;
+  }
+
+  getDatagridSelectAllEl(): HTMLElement | undefined {
+    return this.datagridSelectAll;
+  }
+
+  getDatagridHeaderElDimenstions(): any {
     return this.datagridHeader?.getBoundingClientRect() || {};
   }
 

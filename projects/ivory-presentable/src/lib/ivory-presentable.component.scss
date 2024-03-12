@@ -16,10 +16,12 @@
   }
   .ivpt-content {
     position: relative;
+    overflow-x: auto;
   }
   .ivpt-content-body {
+    width: max-content;
     position: relative;
-    overflow: scroll;
+    overflow-y: auto;
   }
   .ivpt-footer {
     position: relative;
@@ -34,6 +36,12 @@
 .ivpt-content-head {
   @include row-culture;
   height: 45px;
+}
+.ivpt-selectall-cell {
+  display: flex;
+  width: 36px;
+  justify-content: center;
+  flex-shrink: 0;
   border-bottom: 1px solid $ivpt-border-color-standard;
   background-color: $ivpt-background-standard;
 }
@@ -42,6 +50,10 @@
   cursor: pointer;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  flex-shrink: 0;
+  border-bottom: 1px solid $ivpt-border-color-standard;
+  background-color: $ivpt-background-standard;
   &:first-child {
     border-left: none;
   }
@@ -63,6 +75,7 @@
 .ivpt-filters-row {
   @include row-culture;
   height: 45px;
+  width: max-content;
   border-bottom: 1px solid $ivpt-border-color-standard;
   .ivpt-filter-cell {
     @include cell-culture;

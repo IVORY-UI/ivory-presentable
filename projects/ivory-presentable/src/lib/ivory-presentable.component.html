@@ -1,4 +1,4 @@
-<div class="ivpt-container" [ngStyle]="{ 'height.px': gridDefs.height }">
+<div class="ivpt-container" [ngStyle]="{ 'height.px': gridDefs.height }" #datagridWrapper>
   @if (!_isGridReady) {
     <ng-container *ngTemplateOutlet="presentableFallbackTemplate"></ng-container>
   }
@@ -16,10 +16,11 @@
     <div class="ivpt-content">
 
       <!-- Column headings of the table -->
-      <div class="ivpt-content-head" role="row" aria-rowindex="1">
+      <div class="ivpt-content-head" role="row" aria-rowindex="1" #datagridHeaderWrapper>
         @if (recordSelection) {
           <div
-            class="ivpt-select-cell"
+            #ivptSelectAll
+            class="ivpt-selectall-cell"
           >
             <input #ivptSelectAll type="checkbox"
               class="ivpt-all-select-checkbox"
@@ -31,11 +32,11 @@
         }
         @for (colItem of columnDefs; track colItem; let i=$index) {
           <div 
-            class="ivpt-head-cell ivpt-flex-cell" 
+            class="ivpt-head-cell" 
             role="columnheader" 
             attr.aria-colindex="{{i+1}}" 
             (click)="doSort(colItem.field)"
-            [style.min-width.px]="colItem.width"
+            [style.width.px]="colItem.width"
           >
             <div class="ivpt-column-title">
               {{colItem.title}}
@@ -49,7 +50,7 @@
               }
             </div>
             <div class="ivpt-column-ext">
-              <presentable-column-resizer></presentable-column-resizer>
+              <presentable-column-resizer [resizable]="true" (updatedColumnWidth)="updatedColumnWidth(colItem, $event)"></presentable-column-resizer>
             </div>
           </div>
         }
@@ -58,12 +59,12 @@
       <!-- Filter space for each column  -->
       <div class="ivpt-filters-row">
         @if (recordSelection) {
-          <div class="ivpt-filter-cell ivpt-flex-cell" style="max-width: 36px;"></div>
+          <div class="ivpt-filter-cell" style="width: 36px;"></div>
         }
         @for (colItem of columnDefs; track colItem; let i=$index) {
           <div 
-            class="ivpt-filter-cell ivpt-flex-cell"
-            [style.min-width.px]="colItem.width"
+            class="ivpt-filter-cell"
+            [style.width.px]="colItem.width"
           >
             @if (colItem.hasFilter && colItem.filterType==='text') {
               <presentable-text-filter
@@ -82,7 +83,7 @@
       </div>
 
       <!-- Table rows -->
-      <div #ivptContentBody class="ivpt-content-body" role="rowgroup">
+      <div #ivptContentBody class="ivpt-content-body" role="rowgroup" #datagridBodyWrapper>
         @for (dataItem of currVisibleData; track dataItem; let i=$index) {
           <presentable-row
             [columns]="columnDefs"

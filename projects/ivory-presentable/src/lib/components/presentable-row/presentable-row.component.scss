@@ -14,5 +14,7 @@
   .ivpt-content-cell {
     @include cell-culture;
     @include cell-wrap-culture;
+    overflow: unset;
+    flex-shrink: 0;
   }
 }

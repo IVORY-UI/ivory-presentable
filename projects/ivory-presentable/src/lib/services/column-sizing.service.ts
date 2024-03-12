@@ -16,8 +16,9 @@ export class ColumnSizingService {
 
   processColumnOptions(columns: any) {
     return columns.map((column: any) => {
-      column.initialWidth = column.width;
+      column.initialWidth = column.width || 0;
       column.minWidth = column.minWidth || PRESENTABLE_CONFIG.column.minWidth;
+      column.width = Math.max(column.initialWidth,column.minWidth);
       return column;
     })
   }
@@ -32,7 +33,8 @@ export class ColumnSizingService {
 
   getAvailableWidth(columns: any) {
     let headerEl = this.elementManager.getDatagridEl();
-    return (headerEl as HTMLElement).getBoundingClientRect()?.width - this.getColumnsTotWidth(columns);
+    let recordSelectionEl = this.elementManager.getDatagridSelectAllEl();
+    return (headerEl as HTMLElement).getBoundingClientRect()?.width - this.getColumnsTotWidth(columns) - (recordSelectionEl as HTMLElement).getBoundingClientRect()?.width;
   }
 
   reCalcColumnWidth(columns: any) {

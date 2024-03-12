@@ -14,6 +14,7 @@ import { PresentableTextFilterComponent } from './components/filters/presentable
 import { PresentableOptionsFilterComponent } from './components/filters/presentable-options-filter/presentable-options-filter.component';
 
 import { ClickOutsideDirective } from './helpers/click-outside.directive';
+import { ColumnResizeDirective } from './components/presentable-column-resizer/presentable-column-resizer.directive';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { ClickOutsideDirective } from './helpers/click-outside.directive';
     PresentableColumnResizerComponent,
     PresentableColumnControlsComponent,
     PresentablePaginatorComponent,
-    ClickOutsideDirective
+    ClickOutsideDirective,
+    ColumnResizeDirective
   ],
   exports: [
     IvoryPresentableComponent,
