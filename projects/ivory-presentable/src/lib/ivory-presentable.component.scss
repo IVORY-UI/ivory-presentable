@@ -41,6 +41,7 @@
   display: flex;
   width: 36px;
   justify-content: center;
+  flex-shrink: 0;
   border-bottom: 1px solid $ivpt-border-color-standard;
   background-color: $ivpt-background-standard;
 }
