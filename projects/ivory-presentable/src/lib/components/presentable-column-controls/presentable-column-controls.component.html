@@ -4,14 +4,35 @@
   </button>
   @if (_showController) {
     <div #ivptController class="ivpt-column-controller-modal" role="presentation">
-      <ul class="ivpt-column-select-container" role="tree">
+      <div 
+        class="ivpt-column-select-container" 
+        (dragover)="onDragOver($event)"
+        (drop)="onDrop($event)"
+      >
         @for (colItem of columns; track colItem; let i=$index) {
-          <li class="ivpt-column-select-item" role="treeitem" [attr.aria-posinset]="i+1" tabindex="-1" [attr.aria-label]="colItem.title + ' Column'">
-            <input type="checkbox" id="colItem.field" value="colItem.field" [checked]="colItem.visible">
+          <div 
+            class="ivpt-column-select-item" 
+            draggable
+            (click)="clickme()"
+            (ondragstart)="onDragStart($event, colItem)"
+            (dragstart)="onDragStart($event, colItem)"
+          >
+            <input 
+              type="checkbox" 
+              id="colItem.field" 
+              value="colItem.field" 
+              [checked]="colItem.visible"
+              (change)="colItem.visible=!colItem.visible"
+            >
             <label for="colItem.field">{{colItem.title}}</label>
-          </li>
+        </div>
         }
-      </ul>
+      </div>
+      <div class="ivpt-column-controller-submit">
+        <button class="ivpt-button" (click)="applyControls()">
+          Apply
+        </button>
+      </div>
     </div>
   }
 </div>
