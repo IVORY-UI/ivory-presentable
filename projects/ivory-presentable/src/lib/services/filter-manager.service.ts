@@ -48,19 +48,20 @@ export class FilterManagerService {
   }
 
   filterData(data: any, query: any) {
-    console.log('Filter query -> ', query);
     const filtered = data.filter((item: any) => {
       for (let key in query) {
         if (query[key]['type']==='text') {
           const regexp = new RegExp(query[key]['keyword'], 'i');
-          if (regexp.test(item[key])) {
-            return true;
+          if (!regexp.test(item[key])) {
+            return false;
           }
-        } else if (query[key]['type']==='options' && query[key]['values'].includes(item[key])) {
-          return true;
+        } else if (query[key]['type']==='options') {
+          if (!query[key]['values'].includes(item[key])) {
+            return false;
+          }
         }
-        return false;
       }
+      return true;
     });
     return filtered;
   }
