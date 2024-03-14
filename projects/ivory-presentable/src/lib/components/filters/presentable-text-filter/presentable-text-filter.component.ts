@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'presentable-text-filter',
@@ -9,7 +9,7 @@ import { Component, Input } from '@angular/core';
       [name]="column.field"
       id="{{column.field}}"
       [(ngModel)]="_keyword"
-      (keydown)="applyFilter()" 
+      (keydown.enter)="applyFilter()" 
     />
   `,
   styles: `
@@ -24,8 +24,14 @@ export class PresentableTextFilterComponent {
 
   @Input() column: any;
 
-  applyFilter() {
+  @Output() whenApplied = new EventEmitter<any>();
+  emitApplied(value: any) {
+    this.whenApplied.emit(value);
+  }
 
+  applyFilter() {
+    console.log('The keyword is - ', this._keyword);
+    this.emitApplied({'column': this.column['field'], 'type': this.column['filterType'], 'keyword': this._keyword});
   }
 
 }

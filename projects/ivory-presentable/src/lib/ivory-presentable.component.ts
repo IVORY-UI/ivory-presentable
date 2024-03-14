@@ -1,11 +1,13 @@
 import { Component, Input, ElementRef, Renderer2, Output, EventEmitter, ViewChild, OnInit, AfterViewInit, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { delay } from 'rxjs';
 
 import { PRESENTABLE_CONFIG } from './config/config';
 import { PageManagerService } from './services/page-manager.service';
 import { ColumnSizingService } from './services/column-sizing.service';
 import { ElementManagerService } from './services/element-manager.service';
-import { delay } from 'rxjs';
+import { FilterManagerService } from './services/filter-manager.service';
+
 
 @Component({
   selector: 'ivory-presentable',
@@ -18,6 +20,7 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
   dataTrueCopy: any;
   processedData: any;
   currVisibleData: any;
+  unSortedCopy: any;
 
   // Sorting
   _isSortApplied = false;
@@ -43,7 +46,11 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
   
   // @Input() columnDefs: any;
   _columnDefs: any;
+
   @Input() set columnDefs(columnDefs: any) {
+    // if (this.gridDefs.dataSource==='local') {
+    //   this.filterManager.structFilterModel(columnDefs);
+    // }
     this._columnDefs = this.columnSizing.processColumnOptions(columnDefs);
   }
   get columnDefs() {
@@ -54,7 +61,6 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
 
   @Input() set records(value: any) {
     this.dataTrueCopy = value;
-    this._recordsTotal = this.dataTrueCopy.length;
     Object.freeze(this.dataTrueCopy);
     this.processData();
   }
@@ -105,7 +111,8 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef,
     private columnSizing: ColumnSizingService,
     private elementManager: ElementManagerService,
-    public pageManager: PageManagerService
+    public pageManager: PageManagerService,
+    public filterManager: FilterManagerService
   ) {}
 
   ngOnInit() {
@@ -116,12 +123,7 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
     if (this.gridDefs.dataSource==='remote') {
 
     } else if (this.gridDefs.dataSource==='local') {
-      this.processedData = structuredClone(this.dataTrueCopy);
-      if (!this.pagination) {
-        this.currVisibleData =  this.processedData;
-      } else {
-        this.renderData(0, this.recordsPerPage);
-      }
+      this.processLocalData();
       this._isGridReady = true;
     }
     setTimeout(() => {
@@ -129,7 +131,17 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
     }, 2000)
   }
 
-  renderData(from: number, to: number) {
+  processLocalData(data?: any) {
+    this.processedData = (data) ? data : structuredClone(this.dataTrueCopy);
+    if (!this.pagination) {
+      this.currVisibleData =  this.processedData;
+    } else {
+      this._recordsTotal = this.processedData.length;
+      this.setCurrVisibleData(0, this.recordsPerPage);
+    }
+  }
+
+  setCurrVisibleData(from: number, to: number) {
     this.currVisibleData =  this.processedData.slice(from, to);
   }
 
@@ -151,6 +163,7 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
       this._isSortApplied = true;
       this._sortAppliedOn = appliedField;
       this._sortType = 'ASC';
+      this.unSortedCopy = structuredClone(this.processedData);
       this.sortBy(appliedField, 'ASC');
     }
   }
@@ -161,44 +174,57 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
     } else if (orderBy === 'DESC') {
       this.processedData.sort((a: any, b: any) => a[theField] > b[theField] ? -1 : 1);
     }
-    this.renderData(0, this.recordsPerPage);
+    this.setCurrVisibleData(0, this.recordsPerPage);
   }
 
   resetSort() {
     this._isSortApplied = false;
     this._sortAppliedOn = '';
     this._sortType = '';
-    this.processedData = structuredClone(this.dataTrueCopy);
-    this.renderData(0, this.recordsPerPage);
+    this.processedData = structuredClone(this.unSortedCopy);
+    console.log('When reset the sort -> ', this.processedData);
+    this.setCurrVisibleData(0, this.recordsPerPage);
   }
 
-  // Handles filter
-  applyFilter($event: any, filterType: string, column: string) {
+  /**
+   * Invokes when any filter applied
+   * @param data 
+   */
+  handleFilters(data: any) {
     if (this.gridDefs.dataSource==='remote') {
-
+      // emit the data params
     } else if (this.gridDefs.dataSource==='local') {
-      
-      // Review: Logic to updated based on the data source is client side or server side
-      this.records = this.doQueryFilter(column, this.filterModel[column]['keyword']);
+      this.processFilter(data);
     }
   }
 
-  doQueryFilter(column: string, query: string) {
-    let tempDataSet = structuredClone(this.records);
-    return tempDataSet.filter(function (item: any) {
-      return item[column].includes(query) !== -1;
-    });
+  processFilter(data: any) {
+    let result: any = [];
+    this.filterManager.buildQueryModel(data);
+    const queryModel = this.filterManager.getQueryModel();
+    if (Object.keys(queryModel).length!==0) {
+      let tempDataSet = structuredClone(this.records);
+      result = this.filterManager.filterData(tempDataSet, queryModel);
+    } else {
+      result = structuredClone(this.records);
+    }
+    this.processLocalData(result);
   }
 
   resetFiltering() {
-    // Helper method to reset the applied filters
+    if (this.gridDefs.dataSource==='remote') {
+      // emit the data params
+    } else if (this.gridDefs.dataSource==='local') {
+      this.processLocalData();
+      this.filterManager.resetQueryModel();
+    }
   }
 
   onPaginationChange(data: any) {
     if (this.gridDefs.dataSource==='remote') {
 
     } else if (this.gridDefs.dataSource==='local') {
-      this.renderData(data.from, data.to);
+      this.setCurrVisibleData(data.from, data.to);
     }
   }
 
@@ -222,19 +248,17 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
   }
 
   whenSelectRow($event: any, row: any) {
-    if (this.recordSelection) {
-      if ($event.target.checked) {
-        row['dtSelected'] = true;
-        this.selectedRows.push(row);
-        if (this.ivptSelectAllRef) {
-          this.ivptSelectAllRef.nativeElement.indeterminate = true; 
-        }
-      } else {
-        row['dtSelected'] = false;
-        const index = this.selectedRows.indexOf(row);
-        if (index !== -1) {
-          this.selectedRows.splice(index, 1);
-        }
+    if ($event.target.checked) {
+      row['dtSelected'] = true;
+      this.selectedRows.push(row);
+      if (this.ivptSelectAllRef) {
+        this.ivptSelectAllRef.nativeElement.indeterminate = true; 
+      }
+    } else {
+      row['dtSelected'] = false;
+      const index = this.selectedRows.indexOf(row);
+      if (index !== -1) {
+        this.selectedRows.splice(index, 1);
       }
     }
     this.recordsSelected.emit(this.selectedRows);

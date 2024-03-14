@@ -50,7 +50,10 @@
               }
             </div>
             <div class="ivpt-column-ext">
-              <presentable-column-resizer [resizable]="true" (updatedColumnWidth)="updatedColumnWidth(colItem, $event)"></presentable-column-resizer>
+              <presentable-column-resizer 
+                [resizable]="true" 
+                (updatedColumnWidth)="updatedColumnWidth(colItem, $event)"
+              ></presentable-column-resizer>
             </div>
           </div>
         }
@@ -69,14 +72,15 @@
             @if (colItem.hasFilter && colItem.filterType==='text') {
               <presentable-text-filter
                 [column]="colItem"
+                (whenApplied)="handleFilters($event)"
               ></presentable-text-filter>
             }
             @else if (colItem.hasFilter && colItem.filterType==='options') {
               <presentable-options-filter
                 [column]="colItem"
                 [taxonomy]="colItem.filterOptions"
-              >
-              </presentable-options-filter>
+                (whenApplied)="handleFilters($event)"
+              ></presentable-options-filter>
             }
           </div>
         }
@@ -90,8 +94,7 @@
             [rowIndex]="i"
             [rowSelectionEnabled]="recordSelection"
             [rowData]="dataItem"
-          >
-          </presentable-row>
+          ></presentable-row>
         }
       </div>
 
@@ -105,8 +108,7 @@
           [recordsPerPage]="recordsPerPage"
           [recordsTotal]="_recordsTotal"
           (pageChange)="onPaginationChange($event)"
-        >
-        </presentable-paginator>
+        ></presentable-paginator>
       }
     </div>
   }
