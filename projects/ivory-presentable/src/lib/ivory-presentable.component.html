@@ -31,31 +31,33 @@
           </div>
         }
         @for (colItem of columnDefs; track colItem; let i=$index) {
-          <div 
-            class="ivpt-head-cell" 
-            role="columnheader" 
-            attr.aria-colindex="{{i+1}}" 
-            (click)="doSort(colItem.field)"
-            [style.width.px]="colItem.width"
-          >
-            <div class="ivpt-column-title">
-              {{colItem.title}}
-              @if (_isSortApplied && _sortAppliedOn===colItem.field) {
-                @if (_sortType==='ASC') {
-                  <span class="ivpt-sort-identifier"> &uarr;</span>
+          @if (colItem.visible) {
+            <div 
+              class="ivpt-head-cell" 
+              role="columnheader" 
+              attr.aria-colindex="{{i+1}}" 
+              (click)="doSort(colItem.field)"
+              [style.width.px]="colItem.width"
+            >
+              <div class="ivpt-column-title">
+                {{colItem.title}}
+                @if (_isSortApplied && _sortAppliedOn===colItem.field) {
+                  @if (_sortOrder==='ASC') {
+                    <span class="ivpt-sort-identifier"> &uarr;</span>
+                  }
+                  @else if (_sortOrder==='DESC') {
+                    <span class="ivpt-sort-identifier"> &darr;</span>
+                  }
                 }
-                @else if (_sortType==='DESC') {
-                  <span class="ivpt-sort-identifier"> &darr;</span>
-                }
-              }
+              </div>
+              <div class="ivpt-column-ext">
+                <presentable-column-resizer 
+                  [resizable]="true" 
+                  (updatedColumnWidth)="updatedColumnWidth(colItem, $event)"
+                ></presentable-column-resizer>
+              </div>
             </div>
-            <div class="ivpt-column-ext">
-              <presentable-column-resizer 
-                [resizable]="true" 
-                (updatedColumnWidth)="updatedColumnWidth(colItem, $event)"
-              ></presentable-column-resizer>
-            </div>
-          </div>
+          }
         }
       </div>
 
@@ -114,6 +116,6 @@
   }
 
   <ng-template #presentableFallbackTemplate>
-    <div>Loading</div>
+    <div>Loading...</div>
   </ng-template>
 </div>

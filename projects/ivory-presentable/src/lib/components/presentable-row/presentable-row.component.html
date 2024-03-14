@@ -18,13 +18,15 @@
     </div>
   }
   @for (colItem of columns; track colItem; let i=$index) {
-    <div 
-      class="ivpt-content-cell" 
-      role="gridcell" 
-      attr.aria-colindex="{{i+1}}" 
-      [style.width.px]="colItem.width"
-    >
-      {{rowData[colItem.field]}}
-    </div>  
+    @if (colItem.visible) {
+      <div 
+        class="ivpt-content-cell" 
+        role="gridcell" 
+        attr.aria-colindex="{{i+1}}" 
+        [style.width.px]="colItem.width"
+      >
+        {{rowData[colItem.field]}}
+      </div>
+    }  
   }
 </div>

@@ -8,37 +8,32 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class PresentableColumnControlsComponent {
 
   _showController: boolean = false;
-  draggedItem: any;
+  draggingItem: any;
+  isDraggingOver = false;
 
   @Input() columns: any;
 
   @Output() updatedColumns = new EventEmitter; 
-  
-  applyControls() {
-    this._showController = !this._showController;
-    this.updatedColumns.emit(this.columns);
-  }
 
-  onDragStart(event: any, item: any) {
+  onDragStart(event: DragEvent, item: any) {
     console.log('drag started');
-    this.draggedItem = item;
-    event.dataTransfer?.setData('text/plain', '');
+    this.draggingItem = item;
   }
 
-  onDragOver(event: any) {
+  onDragOver(event: DragEvent) {
     event.preventDefault();
     console.log('dragging');
   }
 
-  onDrop(event: any) {
-    event.preventDefault();
-    console.log('dropped');
-    const droppedItem = this.draggedItem;
-    const index = this.columns.indexOf(droppedItem);
-    if (index !== -1) {
-      this.columns.splice(index, 1);
-      const dropIndex = this.getDropIndex(event);
-      this.columns.splice(dropIndex, 0 , droppedItem);
+  onDrop(event: DragEvent, index: number) {
+    console.log('dropped', index);
+    if (this.draggingItem) {
+      const draggingIndex = this.columns.indexOf(this.draggingItem);
+      if (draggingIndex > -1) {
+        this.columns.splice(draggingIndex, 1);
+        this.columns.splice(index, 0, this.draggingItem);
+        this.draggingItem = null;
+      }
     }
   }
 
@@ -48,7 +43,4 @@ export class PresentableColumnControlsComponent {
     return targetIndex;
   }
 
-  clickme() {
-    console.log('Clicked me');
-  }
 }

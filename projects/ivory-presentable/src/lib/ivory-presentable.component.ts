@@ -8,7 +8,6 @@ import { ColumnSizingService } from './services/column-sizing.service';
 import { ElementManagerService } from './services/element-manager.service';
 import { FilterManagerService } from './services/filter-manager.service';
 
-
 @Component({
   selector: 'ivory-presentable',
   templateUrl: './ivory-presentable.component.html',
@@ -25,7 +24,7 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
   // Sorting
   _isSortApplied = false;
   _sortAppliedOn = '';
-  _sortType = '';
+  _sortOrder: string | null = null;
 
   // Filtering
   _isFilterApplied = false;
@@ -153,16 +152,16 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
   doSort(appliedField: string) {
     this.resetPagination();
     if (this._isSortApplied && this._sortAppliedOn === appliedField) {
-      if (this._sortType === 'ASC') {
-        this._sortType = 'DESC';
+      if (this._sortOrder === 'ASC') {
+        this._sortOrder = 'DESC';
         this.sortBy(appliedField, 'DESC');
-      } else if (this._sortType === 'DESC') {
+      } else if (this._sortOrder === 'DESC') {
         this.resetSort();
       }
     } else {
       this._isSortApplied = true;
       this._sortAppliedOn = appliedField;
-      this._sortType = 'ASC';
+      this._sortOrder = 'ASC';
       this.unSortedCopy = structuredClone(this.processedData);
       this.sortBy(appliedField, 'ASC');
     }
@@ -180,9 +179,8 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
   resetSort() {
     this._isSortApplied = false;
     this._sortAppliedOn = '';
-    this._sortType = '';
+    this._sortOrder = null;
     this.processedData = structuredClone(this.unSortedCopy);
-    console.log('When reset the sort -> ', this.processedData);
     this.setCurrVisibleData(0, this.recordsPerPage);
   }
 
