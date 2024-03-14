@@ -22,7 +22,14 @@
   justify-content: flex-end;
 }
 .ivpt-paging-input {
+  width: 24px;
   margin: 0 0.5rem;
+  -moz-appearance: textfield;
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 .ivpt-paginator-button {
   @include button-culture;

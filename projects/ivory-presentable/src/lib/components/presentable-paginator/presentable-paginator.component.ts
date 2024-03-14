@@ -2,6 +2,12 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { PageManagerService } from '../../services/page-manager.service';
 
+type Page = {
+  total: number;
+  current: number;
+  goto: number;
+};
+
 @Component({
   selector: 'presentable-paginator',
   templateUrl: './presentable-paginator.component.html',
@@ -11,7 +17,7 @@ export class PresentablePaginatorComponent {
 
   _showPagination: boolean = false;
   _records: any = {};
-  _page: any = {
+  _page: Page = {
     'total': 1,
     'current': 1,
     'goto': 1
@@ -41,6 +47,7 @@ export class PresentablePaginatorComponent {
   ) {}
 
   ngOnInit() {
+    // The below current page subscription is being used only for the pagination reset usecase
     this.pageManager.currentPage$.subscribe((value: number) => {
       this._page.current = this._page.goto = value;
     });
