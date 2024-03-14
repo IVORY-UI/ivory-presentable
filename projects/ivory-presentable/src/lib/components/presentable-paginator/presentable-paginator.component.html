@@ -1,5 +1,23 @@
 <div class="ivpt-records-summary" role="status">
-  {{((_page.current-1)*_records.perPage)+1}} to {{_page.current * _records.perPage}} of {{_records.total}}
+  <span>
+    {{((_page.current-1)*_records.perPage)+1}}
+  </span>
+  &nbsp;
+  <span> to </span>
+  &nbsp;
+  <span>
+    @if (_records.total < (_page.current*_records.perPage)) {
+      {{_records.total}}
+    } @else {
+      {{_page.current * _records.perPage}}
+    }
+  </span>
+  &nbsp;
+  <span> of </span>
+  &nbsp;
+  <span>
+    {{_records.total}}
+  </span>
 </div>
 
 <div class="ivpt-records-options" role="presentation">
@@ -47,7 +65,7 @@
 
     <input
       class="ivpt-paging-input"
-      type="text"
+      type="number"
       size="2"
       [(ngModel)]="_page.goto"
       (keydown.enter)="goto(null)"

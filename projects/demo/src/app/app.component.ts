@@ -147,6 +147,7 @@ export class AppComponent implements OnInit, OnDestroy {
         'Short-Track Speed Skating',
         'Ski Jumping',
         'Speed Skating',
+        'Swimming',
         'Synchronized Swimming',
         'Table Tennis',
         'Taekwondo',

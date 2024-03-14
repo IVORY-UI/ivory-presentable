@@ -12,7 +12,7 @@
         "./dist/ivory-presentable"
       ]
     },
-    "noImplicitReturns": true,
+    "noImplicitReturns": false,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "esModuleInterop": true,

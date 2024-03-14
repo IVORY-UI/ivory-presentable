@@ -23,17 +23,29 @@ export class PresentableOptionsFilterComponent {
     return this._taxonomy;
   }
 
+  @Output() whenApplied = new EventEmitter<any>();
+  emitApplied(value: any) {
+    this.whenApplied.emit(value);
+  }
+
   constructor(
     public filterManager: FilterManagerService
   ) {}
   
 
-  toggleFilterPopover($event: any) {
+  toggleFilterPopover() {
     this._showPopover=!this._showPopover;
   }
 
   applyFilter() {
-    
+    this.toggleFilterPopover();
+    let appliedObjects: any = [];
+    for (const item of this._taxonomy) {
+      if (item['isSelected']===true) {
+        appliedObjects.push(item['option']);
+      }
+    }
+    this.emitApplied({'column': this.column['field'], 'type': this.column['filterType'], 'values': appliedObjects});
   }
 
 }
