@@ -10,6 +10,7 @@ In addition to the standard set of features you'd expect from any grid:
 - Sorting
 - Filtering
 - Row Selection
+- Column Resizing
 
 ## License
 
