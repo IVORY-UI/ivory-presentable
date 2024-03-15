@@ -2,6 +2,7 @@ import { Component, Input, ElementRef, Output, EventEmitter, ViewChild, OnInit, 
 import { delay } from 'rxjs';
 
 import { PRESENTABLE_CONFIG } from './config/config';
+import { DataManagerService } from './services/data-manager.service';
 import { PageManagerService } from './services/page-manager.service';
 import { ColumnSizingService } from './services/column-sizing.service';
 import { ElementManagerService } from './services/element-manager.service';
@@ -109,6 +110,7 @@ export class IvoryPresentableComponent implements OnInit, OnDestroy, AfterViewIn
     private cdr: ChangeDetectorRef,
     private columnSizing: ColumnSizingService,
     private elementManager: ElementManagerService,
+    public dataManager: DataManagerService,
     public pageManager: PageManagerService,
     public filterManager: FilterManagerService
   ) {}
@@ -143,13 +145,9 @@ export class IvoryPresentableComponent implements OnInit, OnDestroy, AfterViewIn
     this.currVisibleData =  this.processedData.slice(from, to);
   }
 
-  viewManager() {
-    // Helper method to manage the view while renderData
-  }
-
   // Handles sorting
   doSort(appliedField: string) {
-    this.resetPagination();
+    this.pageManager.resetPagination();
     if (this._isSortApplied && this._sortAppliedOn === appliedField) {
       if (this._sortOrder === 'ASC') {
         this._sortOrder = 'DESC';
@@ -225,10 +223,6 @@ export class IvoryPresentableComponent implements OnInit, OnDestroy, AfterViewIn
     }
   }
 
-  resetPagination() {
-    this.pageManager.updateCurrentPage(1);
-  }
-
   whenSelectAll($event: any): void {
     const status = $event.target.checked;
     for (let item of this.currVisibleData) {
@@ -244,7 +238,7 @@ export class IvoryPresentableComponent implements OnInit, OnDestroy, AfterViewIn
     if (data.selected) {
       data.row['isSelected'] = true;
       this.selectedRows.push(data.row);
-      if (!this.canSelectAll(this.currVisibleData)) {
+      if (!this.dataManager.canSelectAll(this.currVisibleData)) {
         this.ivptSelectAllRef.nativeElement.children[0].indeterminate = true;
       } else {
         this.ivptSelectAllRef.nativeElement.children[0].checked = true;
@@ -261,14 +255,6 @@ export class IvoryPresentableComponent implements OnInit, OnDestroy, AfterViewIn
       }
     }
     this.recordsSelected.emit(this.selectedRows);
-  }
-
-  canSelectAll(dataSet: any) {
-    for (let i=0; i<dataSet.length; i++) {
-      if (!dataSet[i].isSelected) {
-        return false;
-      }
-    }
   }
 
   addListeners() {
