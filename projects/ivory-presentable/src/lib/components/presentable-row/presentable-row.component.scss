@@ -8,9 +8,6 @@
   &:hover {
     background-color: #eaf5ff;
   }
-  &:last-child {
-    border-bottom: none;
-  }
   .ivpt-content-cell {
     @include cell-culture;
     @include cell-wrap-culture;
