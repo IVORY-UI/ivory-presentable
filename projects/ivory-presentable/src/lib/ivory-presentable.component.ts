@@ -1,5 +1,4 @@
-import { Component, Input, ElementRef, Renderer2, Output, EventEmitter, ViewChild, OnInit, AfterViewInit, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Component, Input, ElementRef, Output, EventEmitter, ViewChild, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { delay } from 'rxjs';
 
 import { PRESENTABLE_CONFIG } from './config/config';
@@ -13,7 +12,7 @@ import { FilterManagerService } from './services/filter-manager.service';
   templateUrl: './ivory-presentable.component.html',
   styleUrl: './ivory-presentable.component.scss'
 })
-export class IvoryPresentableComponent implements OnInit, AfterViewInit {
+export class IvoryPresentableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Records Data
   dataTrueCopy: any;
@@ -40,6 +39,9 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
     page: {},
     filter: {}
   };
+
+  // Row Selection
+  selectedRows: any = [];
 
   @Input() gridDefs: any;
   
@@ -104,9 +106,6 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
   }
 
   constructor(
-    private renderer: Renderer2,
-    private el: ElementRef,
-    private domSanitizer: DomSanitizer,
     private cdr: ChangeDetectorRef,
     private columnSizing: ColumnSizingService,
     private elementManager: ElementManagerService,
@@ -230,12 +229,8 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
     this.pageManager.updateCurrentPage(1);
   }
 
-  // Row Selection
-  selectedRows: any = [];
-
   whenSelectAll($event: any): void {
     const status = $event.target.checked;
-    this.selectedRows = [];
     for (let item of this.currVisibleData) {
       item['dtSelected'] = status;
       if (status) {
@@ -245,21 +240,35 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
     this.recordsSelected.emit(this.selectedRows);
   }
 
-  whenSelectRow($event: any, row: any) {
-    if ($event.target.checked) {
-      row['dtSelected'] = true;
-      this.selectedRows.push(row);
-      if (this.ivptSelectAllRef) {
-        this.ivptSelectAllRef.nativeElement.indeterminate = true; 
+  whenSelectRow(data: any) {
+    if (data.selected) {
+      data.row['isSelected'] = true;
+      this.selectedRows.push(data.row);
+      if (!this.canSelectAll(this.currVisibleData)) {
+        this.ivptSelectAllRef.nativeElement.children[0].indeterminate = true;
+      } else {
+        this.ivptSelectAllRef.nativeElement.children[0].checked = true;
       }
     } else {
-      row['dtSelected'] = false;
-      const index = this.selectedRows.indexOf(row);
-      if (index !== -1) {
-        this.selectedRows.splice(index, 1);
+      data.row['isSelected'] = false;
+      const index = this.selectedRows.indexOf(data.row);
+      this.selectedRows.splice(index, 1);
+      if (this.selectedRows.length>0) {
+        this.ivptSelectAllRef.nativeElement.children[0].indeterminate = true;
+      } else {
+        this.ivptSelectAllRef.nativeElement.children[0].indeterminate = false;
+        this.ivptSelectAllRef.nativeElement.children[0].checked = false;
       }
     }
     this.recordsSelected.emit(this.selectedRows);
+  }
+
+  canSelectAll(dataSet: any) {
+    for (let i=0; i<dataSet.length; i++) {
+      if (!dataSet[i].isSelected) {
+        return false;
+      }
+    }
   }
 
   addListeners() {
@@ -274,4 +283,10 @@ export class IvoryPresentableComponent implements OnInit, AfterViewInit {
   updatedColumnWidth(colItem: any, width: any) {
     colItem.width = width;
   }
+
+  ngOnDestroy() {
+    this._isGridReady = false;
+    this.selectedRows = [];
+  }
+
 }

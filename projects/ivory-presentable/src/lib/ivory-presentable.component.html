@@ -22,7 +22,7 @@
             #ivptSelectAll
             class="ivpt-selectall-cell"
           >
-            <input #ivptSelectAll type="checkbox"
+            <input type="checkbox"
               class="ivpt-all-select-checkbox"
               tabindex="-1"
               id="selectall"
@@ -96,6 +96,7 @@
             [rowIndex]="i"
             [rowSelectionEnabled]="recordSelection"
             [rowData]="dataItem"
+            (onSelection)="whenSelectRow($event)"
           ></presentable-row>
         }
       </div>

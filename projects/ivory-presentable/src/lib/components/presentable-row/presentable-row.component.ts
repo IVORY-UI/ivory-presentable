@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'presentable-row',
@@ -15,9 +15,10 @@ export class PresentableRowComponent {
 
   @Input() rowData: any;
 
-  onRowSelectionChange($event: any, rowData: any) {
-    console.log('Event - ', $event);
-    console.log('Row Data - ', rowData);
+  @Output() onSelection = new EventEmitter<any>();
+
+  whenRowSelected($event: any, rowData: any) {
+    this.onSelection.emit({'selected': $event.target.checked, 'row': rowData});
   }
 
 }
