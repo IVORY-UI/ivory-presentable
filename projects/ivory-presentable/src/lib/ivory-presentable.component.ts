@@ -48,9 +48,9 @@ export class IvoryPresentableComponent
   _isGridReady = false;
 
   // data params when the data source is remote (server-side)
-  dataParams: any = {
-    page: {},
-    filter: {},
+  remoteDataParams: any = {
+    pageConfig: {},
+    filterConfig: {},
   };
 
   // Row Selection
@@ -90,7 +90,9 @@ export class IvoryPresentableComponent
 
   @Input() recordSelection: boolean = false;
 
-  @Output() recordsSelected = new EventEmitter();
+  @Output() dataparams = new EventEmitter<any>();
+
+  @Output() recordsSelected = new EventEmitter<any>();
 
   @ViewChild("ivptSelectAll") ivptSelectAllRef!: ElementRef;
 
@@ -195,16 +197,20 @@ export class IvoryPresentableComponent
   }
 
   sortBy(theField: any, orderBy: string) {
-    if (orderBy === "ASC") {
-      this.processedData.sort((a: any, b: any) =>
-        a[theField] > b[theField] ? 1 : -1
-      );
-    } else if (orderBy === "DESC") {
-      this.processedData.sort((a: any, b: any) =>
-        a[theField] > b[theField] ? -1 : 1
-      );
+    if (this.gridDefs.dataSource === "remote") {
+
+    } else if (this.gridDefs.dataSource === "local") {
+      if (orderBy === "ASC") {
+        this.processedData.sort((a: any, b: any) =>
+          a[theField] > b[theField] ? 1 : -1
+        );
+      } else if (orderBy === "DESC") {
+        this.processedData.sort((a: any, b: any) =>
+          a[theField] > b[theField] ? -1 : 1
+        );
+      }
+      this.setCurrVisibleData(0, this.recordsPerPage);
     }
-    this.setCurrVisibleData(0, this.recordsPerPage);
   }
 
   resetSort() {
@@ -220,8 +226,10 @@ export class IvoryPresentableComponent
    * @param data
    */
   handleFilters(data: any) {
+    this.filterManager.buildQueryModel(data);
     if (this.gridDefs.dataSource === "remote") {
-      // emit the data params
+      this.remoteDataParams.filterConfig = this.filterManager.getQueryModel();
+      this.dataparams.emit(this.remoteDataParams);
     } else if (this.gridDefs.dataSource === "local") {
       this.processFilter(data);
     }
@@ -229,7 +237,6 @@ export class IvoryPresentableComponent
 
   processFilter(data: any) {
     let result: any = [];
-    this.filterManager.buildQueryModel(data);
     const queryModel = this.filterManager.getQueryModel();
     if (Object.keys(queryModel).length !== 0) {
       let tempDataSet = structuredClone(this.records);
@@ -242,7 +249,8 @@ export class IvoryPresentableComponent
 
   resetFiltering() {
     if (this.gridDefs.dataSource === "remote") {
-      // emit the data params
+      this.remoteDataParams.filterConfig = {}
+      this.dataparams.emit(this.remoteDataParams);
     } else if (this.gridDefs.dataSource === "local") {
       this.processLocalData();
       this.filterManager.resetQueryModel();
@@ -292,6 +300,7 @@ export class IvoryPresentableComponent
 
   ngOnDestroy() {
     this._isGridReady = false;
+    this.remoteDataParams = {};
     this.selectedRows = [];
   }
 }

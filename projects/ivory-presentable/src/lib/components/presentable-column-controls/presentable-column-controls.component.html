@@ -12,6 +12,7 @@
         <div 
           class="ivpt-column-select-item" 
           [ngClass]="{'highlighted': isDraggingOver}"
+          [style.top.rem]="(i * 2.4)"
           draggable="true"
           (dragstart)="onDragStart($event, colItem)"
           (dragover)="onDragOver($event)"
