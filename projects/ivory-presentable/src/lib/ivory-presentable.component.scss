@@ -35,50 +35,45 @@
 
 .ivpt-content-head {
   @include row-culture;
-  height: 45px;
-}
-.ivpt-selectall-cell {
-  display: flex;
-  width: 36px;
-  justify-content: center;
-  flex-shrink: 0;
-  border-bottom: 1px solid $ivpt-border-color-standard;
-  background-color: $ivpt-background-standard;
-}
-.ivpt-head-cell {
-  display: flex;
-  cursor: pointer;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  flex-shrink: 0;
-  border-bottom: 1px solid $ivpt-border-color-standard;
-  background-color: $ivpt-background-standard;
-  &:first-child {
-    border-left: none;
-  }
-}
-.ivpt-column-title {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0 0.5rem;
-  line-height: 2.5rem;
-}
-.ivpt-column-ext {
-  display: flex;
-  .ivpt-sort-identifier {
-    padding: 0 5px;
-  }
 }
 
-.ivpt-filters-row {
-  @include row-culture;
-  height: 45px;
-  width: max-content;
+.ivpt-head-column-cell-wrapper {
   border-bottom: 1px solid $ivpt-border-color-standard;
+  .ivpt-selectall-cell {
+    @include head-cell-culture;
+    width: 36px;
+    justify-content: center;
+    flex-shrink: 0;
+    border-bottom: 1px solid $ivpt-border-color-standard;
+    background-color: $ivpt-background-standard;
+  }
+  .ivpt-head-cell {
+    @include head-cell-culture;
+    cursor: pointer;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    border-bottom: 1px solid $ivpt-border-color-standard;
+    background-color: $ivpt-background-standard;
+    &:first-child {
+      border-left: none;
+    }
+  }
   .ivpt-filter-cell {
-    @include cell-culture;
-    position: relative;
+    @include head-cell-culture;
+    padding: 0 0.5rem;
+  }
+  .ivpt-column-title {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 0.5rem;
+    line-height: 2.5rem;
+  }
+  .ivpt-column-ext {
+    display: flex;
+    .ivpt-sort-identifier {
+      padding: 0 5px;
+    }
   }
 }

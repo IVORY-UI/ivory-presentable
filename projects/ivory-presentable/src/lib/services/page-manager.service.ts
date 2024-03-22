@@ -13,4 +13,8 @@ export class PageManagerService {
     this.currentPageSub.next(value);
   }
 
+  resetPagination() {
+    this.updateCurrentPage(1);
+  }
+
 }

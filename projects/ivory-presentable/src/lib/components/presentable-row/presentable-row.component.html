@@ -12,19 +12,21 @@
           tabindex="-1"
           name="dt_row_select"
           [checked]="rowData.dtSelected"
-          (change)="onRowSelectionChange($event, rowData)"
+          (change)="whenRowSelected($event, rowData)"
         />
       </div>
     </div>
   }
   @for (colItem of columns; track colItem; let i=$index) {
-    <div 
-      class="ivpt-content-cell" 
-      role="gridcell" 
-      attr.aria-colindex="{{i+1}}" 
-      [style.width.px]="colItem.width"
-    >
-      {{rowData[colItem.field]}}
-    </div>  
+    @if (colItem.visible) {
+      <div 
+        class="ivpt-content-cell" 
+        role="gridcell" 
+        attr.aria-colindex="{{i+1}}" 
+        [style.width.px]="colItem.width"
+      >
+        {{rowData[colItem.field]}}
+      </div>
+    }  
   }
 </div>

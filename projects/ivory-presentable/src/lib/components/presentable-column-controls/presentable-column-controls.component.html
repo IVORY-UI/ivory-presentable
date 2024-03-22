@@ -2,37 +2,32 @@
   <button class="ivpt-column-controller-handle" (click)="_showController=!_showController">
     Columns
   </button>
-  @if (_showController) {
-    <div #ivptController class="ivpt-column-controller-modal" role="presentation">
-      <div 
-        class="ivpt-column-select-container" 
-        (dragover)="onDragOver($event)"
-        (drop)="onDrop($event)"
-      >
-        @for (colItem of columns; track colItem; let i=$index) {
-          <div 
-            class="ivpt-column-select-item" 
-            draggable
-            (click)="clickme()"
-            (ondragstart)="onDragStart($event, colItem)"
-            (dragstart)="onDragStart($event, colItem)"
+  
+  <div 
+    class="ivpt-column-controller-modal"
+    [ngStyle]="{'visibility': _showController ? 'visible' : 'hidden'}"
+  >
+    <div class="ivpt-column-select-container">
+      @for (colItem of columns; track colItem; let i=$index) {
+        <div 
+          class="ivpt-column-select-item" 
+          [ngClass]="{'highlighted': isDraggingOver}"
+          [style.top.rem]="(i * 2.4)"
+          draggable="true"
+          (dragstart)="onDragStart($event, colItem)"
+          (dragover)="onDragOver($event)"
+          (drop)="onDrop($event, i)"
+        >
+          <input 
+            type="checkbox" 
+            id="colItem.field" 
+            value="colItem.field" 
+            [checked]="colItem.visible"
+            (change)="toggleColumn(colItem)"
           >
-            <input 
-              type="checkbox" 
-              id="colItem.field" 
-              value="colItem.field" 
-              [checked]="colItem.visible"
-              (change)="colItem.visible=!colItem.visible"
-            >
-            <label for="colItem.field">{{colItem.title}}</label>
-        </div>
-        }
+          <label for="colItem.field">{{colItem.title}}</label>
       </div>
-      <div class="ivpt-column-controller-submit">
-        <button class="ivpt-button" (click)="applyControls()">
-          Apply
-        </button>
-      </div>
+      }
     </div>
-  }
+  </div>
 </div>

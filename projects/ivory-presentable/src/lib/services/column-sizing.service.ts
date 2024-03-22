@@ -26,6 +26,9 @@ export class ColumnSizingService {
   getColumnsTotWidth(columns: any): number {
     let totWidth = 0;
     columns.forEach((column: any) => {
+      if (!column.visible) {
+        return;
+      }
       totWidth += +(column.width || 0);
     });
     return totWidth;

@@ -5,6 +5,12 @@
   flex-direction: row;
   flex-wrap: nowrap;
 }
+@mixin head-cell-culture {
+  position: relative;
+  display: flex;
+  height: 45px;
+  line-height: 45px;
+}
 @mixin cell-culture {
   padding: 0 0.5rem;
   line-height: 42px;
