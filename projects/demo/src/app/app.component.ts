@@ -23,9 +23,9 @@ export class AppComponent implements OnInit, OnDestroy {
       'field': 'athlete',
       'title': 'Athlete',
       'visible': true,
+      'width': '140',
       'hasFilter': true,
-      'filterType': 'text',
-      'width': '140'
+      'filterType': 'text'
     },
     { 
       'field': 'age',
@@ -115,6 +115,7 @@ export class AppComponent implements OnInit, OnDestroy {
       'field': 'sport',
       'title': 'Sport',
       'visible': true,
+      'width': '140',
       'hasFilter': true,
       'filterType': 'options',
       'filterOptions': [

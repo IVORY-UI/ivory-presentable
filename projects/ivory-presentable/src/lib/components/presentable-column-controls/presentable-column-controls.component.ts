@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+import { ColumnSizingService } from '../../services/column-sizing.service';
+
 @Component({
   selector: 'presentable-column-controls',
   templateUrl: './presentable-column-controls.component.html',
@@ -14,6 +16,10 @@ export class PresentableColumnControlsComponent {
   @Input() columns: any;
 
   @Output() updatedColumns = new EventEmitter; 
+
+  constructor(
+    public columnSizing: ColumnSizingService
+  ) {}
 
   onDragStart(event: DragEvent, item: any) {
     console.log('drag started');
@@ -41,6 +47,11 @@ export class PresentableColumnControlsComponent {
     const target = event.target as HTMLElement;
     const targetIndex = Array.from(target.parentNode!.children).indexOf(target);
     return targetIndex;
+  }
+
+  toggleColumn(column: any) {
+    column.visible=!column.visible;
+    this.columnSizing.reCalcWidth.next(true);
   }
 
 }

@@ -16,75 +16,69 @@
     <div class="ivpt-content">
 
       <!-- Column headings of the table -->
-      <div class="ivpt-content-head" role="row" aria-rowindex="1" #datagridHeaderWrapper>
+      <div #datagridHeaderWrapper class="ivpt-content-head" role="row" aria-rowindex="1">
         @if (recordSelection) {
-          <div
-            #ivptSelectAll
-            class="ivpt-selectall-cell"
-          >
-            <input type="checkbox"
-              class="ivpt-all-select-checkbox"
-              tabindex="-1"
-              id="selectall"
-              (change)="whenSelectAll($event)"
-            />
+          <div class="ivpt-head-column-cell-wrapper">
+            <div #ivptSelectAll class="ivpt-selectall-cell">
+              <input type="checkbox"
+                class="ivpt-all-select-checkbox"
+                tabindex="-1"
+                id="selectall"
+                (change)="whenSelectAll($event)"
+              />
+            </div>
+            <div class="ivpt-filter-cell" style="width: 36px;"></div>
           </div>
         }
         @for (colItem of columnDefs; track colItem; let i=$index) {
           @if (colItem.visible) {
-            <div 
-              class="ivpt-head-cell" 
-              role="columnheader" 
-              attr.aria-colindex="{{i+1}}" 
-              (click)="doSort(colItem.field)"
-              [style.width.px]="colItem.width"
-            >
-              <div class="ivpt-column-title">
-                {{colItem.title}}
-                @if (_isSortApplied && _sortAppliedOn===colItem.field) {
-                  @if (_sortOrder==='ASC') {
-                    <span class="ivpt-sort-identifier"> &uarr;</span>
+            <div class="ivpt-head-column-cell-wrapper">
+              <div 
+                class="ivpt-head-cell" 
+                role="columnheader" 
+                attr.aria-colindex="{{i+1}}" 
+                (click)="doSort(colItem.field)"
+                [style.width.px]="colItem.width"
+              >
+                <div class="ivpt-column-title">
+                  {{colItem.title}}
+                  @if (_isSortApplied && _sortAppliedOn===colItem.field) {
+                    @if (_sortOrder==='ASC') {
+                      <span class="ivpt-sort-identifier"> &uarr;</span>
+                    }
+                    @else if (_sortOrder==='DESC') {
+                      <span class="ivpt-sort-identifier"> &darr;</span>
+                    }
                   }
-                  @else if (_sortOrder==='DESC') {
-                    <span class="ivpt-sort-identifier"> &darr;</span>
-                  }
+                </div>
+                <div class="ivpt-column-ext">
+                  <presentable-column-resizer 
+                    [resizable]="true" 
+                    (updatedColumnWidth)="updatedColumnWidth(colItem, $event)"
+                  ></presentable-column-resizer>
+                </div>
+              </div>
+              <div 
+                class="ivpt-filter-cell"
+                [style.width.px]="colItem.width"
+              >
+                @if (colItem.hasFilter && colItem.filterType==='text') {
+                  <presentable-text-filter
+                    [column]="colItem"
+                    (whenApplied)="handleFilters($event)"
+                  ></presentable-text-filter>
+                }
+                @else if (colItem.hasFilter && colItem.filterType==='options') {
+                  <presentable-options-filter
+                    [column]="colItem"
+                    [taxonomy]="colItem.filterOptions"
+                    (whenApplied)="handleFilters($event)"
+                  ></presentable-options-filter>
                 }
               </div>
-              <div class="ivpt-column-ext">
-                <presentable-column-resizer 
-                  [resizable]="true" 
-                  (updatedColumnWidth)="updatedColumnWidth(colItem, $event)"
-                ></presentable-column-resizer>
-              </div>
             </div>
+              
           }
-        }
-      </div>
-
-      <!-- Filter space for each column  -->
-      <div class="ivpt-filters-row">
-        @if (recordSelection) {
-          <div class="ivpt-filter-cell" style="width: 36px;"></div>
-        }
-        @for (colItem of columnDefs; track colItem; let i=$index) {
-          <div 
-            class="ivpt-filter-cell"
-            [style.width.px]="colItem.width"
-          >
-            @if (colItem.hasFilter && colItem.filterType==='text') {
-              <presentable-text-filter
-                [column]="colItem"
-                (whenApplied)="handleFilters($event)"
-              ></presentable-text-filter>
-            }
-            @else if (colItem.hasFilter && colItem.filterType==='options') {
-              <presentable-options-filter
-                [column]="colItem"
-                [taxonomy]="colItem.filterOptions"
-                (whenApplied)="handleFilters($event)"
-              ></presentable-options-filter>
-            }
-          </div>
         }
       </div>
 

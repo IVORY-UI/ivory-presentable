@@ -23,7 +23,7 @@
             id="colItem.field" 
             value="colItem.field" 
             [checked]="colItem.visible"
-            (change)="colItem.visible=!colItem.visible"
+            (change)="toggleColumn(colItem)"
           >
           <label for="colItem.field">{{colItem.title}}</label>
       </div>
