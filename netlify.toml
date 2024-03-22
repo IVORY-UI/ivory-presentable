@@ -1,0 +1,7 @@
+[build]
+  publish = "./dist/demo"
+
+[[redirects]]
+  from = "/*"
+  to = "/demo/browser/index.html"
+  status = 200
