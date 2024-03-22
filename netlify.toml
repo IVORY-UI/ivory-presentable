@@ -1,7 +1,7 @@
 [build]
-  publish = "./dist/demo"
+  publish = "./dist/demo/browser"
 
 [[redirects]]
   from = "/*"
-  to = "/demo/browser/index.html"
+  to = "/index.html"
   status = 200
