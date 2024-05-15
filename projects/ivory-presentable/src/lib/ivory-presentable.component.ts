@@ -62,9 +62,6 @@ export class IvoryPresentableComponent
   _columnDefs: any;
 
   @Input() set columnDefs(columnDefs: any) {
-    // if (this.gridDefs.dataSource==='local') {
-    //   this.filterManager.structFilterModel(columnDefs);
-    // }
     this._columnDefs = this.columnSizing.processColumnOptions(columnDefs);
   }
   get columnDefs() {
@@ -143,6 +140,7 @@ export class IvoryPresentableComponent
 
   processData() {
     if (this.gridDefs.dataSource === "remote") {
+      // process remote data
     } else if (this.gridDefs.dataSource === "local") {
       this.processLocalData();
       this._isGridReady = true;
@@ -153,7 +151,7 @@ export class IvoryPresentableComponent
   }
 
   processLocalData(data?: any) {
-    this.processedData = data ? data : structuredClone(this.dataTrueCopy);
+    this.processedData = data || structuredClone(this.dataTrueCopy);
     if (!this.pagination) {
       this.currVisibleData = this.processedData;
     } else {
@@ -198,7 +196,7 @@ export class IvoryPresentableComponent
 
   sortBy(theField: any, orderBy: string) {
     if (this.gridDefs.dataSource === "remote") {
-
+      // emit the data params
     } else if (this.gridDefs.dataSource === "local") {
       if (orderBy === "ASC") {
         this.processedData.sort((a: any, b: any) =>
@@ -259,6 +257,7 @@ export class IvoryPresentableComponent
 
   onPaginationChange(data: any) {
     if (this.gridDefs.dataSource === "remote") {
+      // emit the data params
     } else if (this.gridDefs.dataSource === "local") {
       this.setCurrVisibleData(data.from, data.to);
     }
