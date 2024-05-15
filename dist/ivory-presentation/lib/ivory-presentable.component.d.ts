@@ -1,0 +1,70 @@
+import { ElementRef, EventEmitter, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy } from "@angular/core";
+import { DataManagerService } from "./services/data-manager.service";
+import { PageManagerService } from "./services/page-manager.service";
+import { ColumnSizingService } from "./services/column-sizing.service";
+import { ElementManagerService } from "./services/element-manager.service";
+import { FilterManagerService } from "./services/filter-manager.service";
+import * as i0 from "@angular/core";
+export declare class IvoryPresentableComponent implements OnInit, OnDestroy, AfterViewInit {
+    private cdr;
+    private columnSizing;
+    private elementManager;
+    dataManager: DataManagerService;
+    pageManager: PageManagerService;
+    filterManager: FilterManagerService;
+    dataTrueCopy: any;
+    processedData: any;
+    currVisibleData: any;
+    unSortedCopy: any;
+    _isSortApplied: boolean;
+    _sortAppliedOn: string;
+    _sortOrder: string | null;
+    _isFilterApplied: boolean;
+    filterModel: any;
+    _recordsTotal: number;
+    _isGridReady: boolean;
+    remoteDataParams: any;
+    selectedRows: any;
+    gridDefs: any;
+    _columnDefs: any;
+    set columnDefs(columnDefs: any);
+    get columnDefs(): any;
+    columnControls: boolean;
+    set records(value: any);
+    get records(): any;
+    pagination: boolean;
+    recordsPerPage: number;
+    recordsPerPageOptions: any;
+    recordSelection: boolean;
+    dataparams: EventEmitter<any>;
+    recordsSelected: EventEmitter<any>;
+    ivptSelectAllRef: ElementRef;
+    ivptContentBodyRef: ElementRef | undefined;
+    datagridWrapper: ElementRef;
+    datagridHeaderWrapper: ElementRef;
+    datagridBodyWrapper: ElementRef;
+    ngAfterViewInit(): void;
+    constructor(cdr: ChangeDetectorRef, columnSizing: ColumnSizingService, elementManager: ElementManagerService, dataManager: DataManagerService, pageManager: PageManagerService, filterManager: FilterManagerService);
+    ngOnInit(): void;
+    processData(): void;
+    processLocalData(data?: any): void;
+    setCurrVisibleData(from: number, to: number): void;
+    addListeners(): void;
+    updatedColumnWidth(colItem: any, width: any): void;
+    doSort(appliedField: string): void;
+    sortBy(theField: any, orderBy: string): void;
+    resetSort(): void;
+    /**
+     * Invokes when any filter applied
+     * @param data
+     */
+    handleFilters(data: any): void;
+    processFilter(data: any): void;
+    resetFiltering(): void;
+    onPaginationChange(data: any): void;
+    whenSelectAll($event: any): void;
+    whenSelectRow(data: any): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<IvoryPresentableComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<IvoryPresentableComponent, "ivory-presentable", never, { "gridDefs": { "alias": "gridDefs"; "required": false; }; "columnDefs": { "alias": "columnDefs"; "required": false; }; "columnControls": { "alias": "columnControls"; "required": false; }; "records": { "alias": "records"; "required": false; }; "pagination": { "alias": "pagination"; "required": false; }; "recordsPerPage": { "alias": "recordsPerPage"; "required": false; }; "recordsPerPageOptions": { "alias": "recordsPerPageOptions"; "required": false; }; "recordSelection": { "alias": "recordSelection"; "required": false; }; }, { "dataparams": "dataparams"; "recordsSelected": "recordsSelected"; }, never, never, false, never>;
+}

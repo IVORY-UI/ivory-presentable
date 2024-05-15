@@ -9,16 +9,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       (updatedColumnWidth)="updatedColumnWidth.emit(+$event)"
     ></div>
   `,
-  styles: `
-    @import '../../styles/variables.scss';
-
-    .ivpt-resize-anchor {
-      cursor: ew-resize;
-      width: 2px;
-      height: 1.2rem;
-      background-color: $ivpt-border-color-resize;
-    }
-  `
+  styleUrl: './presentable-column-resizer.component.scss'
 })
 export class PresentableColumnResizerComponent {
 

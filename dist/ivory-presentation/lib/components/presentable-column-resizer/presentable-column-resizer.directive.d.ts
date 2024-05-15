@@ -1,0 +1,32 @@
+import { AfterViewInit, ElementRef, EventEmitter, NgZone, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { ColumnSizingService } from '../../services/column-sizing.service';
+import { ElementManagerService } from '../../services/element-manager.service';
+import * as i0 from "@angular/core";
+export declare class ColumnResizeDirective implements OnInit, AfterViewInit {
+    zone: NgZone;
+    private columnSizing;
+    private elementRef;
+    document: Document;
+    minWidth: number | string | undefined;
+    maxWidth: number | string | undefined;
+    updatedColumnWidth: EventEmitter<number>;
+    get isColumnResizing(): boolean;
+    mouseDown: Subject<any>;
+    mouseMove: Subject<any>;
+    mouseUp: Subject<any>;
+    columnOffsetLeft: number;
+    isResizing: boolean;
+    defaultResizerHeight: number;
+    destroy$: Subject<boolean>;
+    columnContainerElement: HTMLElement | null | undefined;
+    elementManager: ElementManagerService;
+    constructor(zone: NgZone, columnSizing: ColumnSizingService, elementRef: ElementRef, document: Document);
+    ngAfterViewInit(): void;
+    updateColumnWidth(newWidth: number): void;
+    addColumnResizeStyle(): void;
+    mouseDownEvent(event: MouseEvent): void;
+    ngOnInit(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ColumnResizeDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ColumnResizeDirective, "[presentableColumnResizer]", never, { "minWidth": { "alias": "minWidth"; "required": false; }; "maxWidth": { "alias": "maxWidth"; "required": false; }; }, { "updatedColumnWidth": "updatedColumnWidth"; }, never, never, false, never>;
+}

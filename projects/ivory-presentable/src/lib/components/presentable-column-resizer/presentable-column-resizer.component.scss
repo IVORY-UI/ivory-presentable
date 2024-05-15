@@ -1,0 +1,8 @@
+@import '../../styles/variables';
+
+.ivpt-resize-anchor {
+  cursor: ew-resize;
+  width: 2px;
+  height: 1.2rem;
+  background-color: $ivpt-border-color-resize;
+}

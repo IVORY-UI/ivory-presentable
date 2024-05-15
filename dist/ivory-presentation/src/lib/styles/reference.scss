@@ -1,0 +1,34 @@
+@import './variables';
+
+@mixin row-culture {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+@mixin head-cell-culture {
+  position: relative;
+  display: flex;
+  height: 45px;
+  line-height: 45px;
+}
+@mixin cell-culture {
+  padding: 0 0.5rem;
+  line-height: 42px;
+}
+@mixin cell-wrap-culture {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@mixin button-culture {
+  border: none;
+  border-radius: 0.25rem;
+  background-color: $ivpt-button-background-standard;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  padding: 0 0.5rem;
+  cursor: pointer;
+  &:hover, &:focus {
+    background-color: $ivpt-button-background-highlight;
+  }
+}
