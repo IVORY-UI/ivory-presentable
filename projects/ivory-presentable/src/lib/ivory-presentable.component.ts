@@ -49,8 +49,11 @@ export class IvoryPresentableComponent
 
   // data params when the data source is remote (server-side)
   remoteDataParams: any = {
-    pageConfig: {},
     filterConfig: {},
+    sortBy: null,
+    orderBy: null,
+    recordsFrom: null,
+    recordsTo: null
   };
 
   // Row Selection
@@ -139,15 +142,23 @@ export class IvoryPresentableComponent
   }
 
   processData() {
-    if (this.gridDefs.dataSource === "remote") {
-      // process remote data
-    } else if (this.gridDefs.dataSource === "local") {
+    if (this.gridDefs.dataStream==="server-side") {
+      this.processRemoteData();
+      this._isGridReady = true;
+    } else if (this.gridDefs.dataStream==="client-side") {
       this.processLocalData();
       this._isGridReady = true;
     }
     setTimeout(() => {
       this.columnSizing.reCalcWidth.next(true);
     }, 2000);
+  }
+
+  processRemoteData(data?: any) {
+    this.processedData = data || structuredClone(this.dataTrueCopy);
+    this.currVisibleData = this.processedData;
+    this._recordsTotal = this.gridDefs.recordsTotal;
+    this.pagination = this._recordsTotal > this.processedData.length;
   }
 
   processLocalData(data?: any) {
@@ -195,9 +206,13 @@ export class IvoryPresentableComponent
   }
 
   sortBy(theField: any, orderBy: string) {
-    if (this.gridDefs.dataSource === "remote") {
-      // emit the data params
-    } else if (this.gridDefs.dataSource === "local") {
+    if (this.gridDefs.dataStream==="server-side") {
+      this.remoteDataParams.sortBy = theField;
+      this.remoteDataParams.orderBy = orderBy;
+      this.remoteDataParams.recordsFrom = 0;
+      this.remoteDataParams.recordsTo = null;
+      this.dataparams.emit(this.remoteDataParams);
+    } else if (this.gridDefs.dataStream==="client-side") {
       if (orderBy === "ASC") {
         this.processedData.sort((a: any, b: any) =>
           a[theField] > b[theField] ? 1 : -1
@@ -225,10 +240,12 @@ export class IvoryPresentableComponent
    */
   handleFilters(data: any) {
     this.filterManager.buildQueryModel(data);
-    if (this.gridDefs.dataSource === "remote") {
+    if (this.gridDefs.dataStream==="server-side") {
       this.remoteDataParams.filterConfig = this.filterManager.getQueryModel();
+      this.remoteDataParams.recordsFrom = 0;
+      this.remoteDataParams.recordsTo = this.recordsPerPage;
       this.dataparams.emit(this.remoteDataParams);
-    } else if (this.gridDefs.dataSource === "local") {
+    } else if (this.gridDefs.dataStream==="client-side") {
       this.processFilter(data);
     }
   }
@@ -246,19 +263,23 @@ export class IvoryPresentableComponent
   }
 
   resetFiltering() {
-    if (this.gridDefs.dataSource === "remote") {
+    if (this.gridDefs.dataStream==="server-side") {
       this.remoteDataParams.filterConfig = {}
+      this.remoteDataParams.recordsFrom = 0;
+      this.remoteDataParams.recordsTo = this.recordsPerPage;
       this.dataparams.emit(this.remoteDataParams);
-    } else if (this.gridDefs.dataSource === "local") {
+    } else if (this.gridDefs.dataStream==="client-side") {
       this.processLocalData();
       this.filterManager.resetQueryModel();
     }
   }
 
   onPaginationChange(data: any) {
-    if (this.gridDefs.dataSource === "remote") {
-      // emit the data params
-    } else if (this.gridDefs.dataSource === "local") {
+    if (this.gridDefs.dataStream==="server-side") {
+      this.remoteDataParams.recordsFrom = data.from;
+      this.remoteDataParams.recordsTo = data.to;
+      this.dataparams.emit(this.remoteDataParams);
+    } else if (this.gridDefs.dataStream==="client-side") {
       this.setCurrVisibleData(data.from, data.to);
     }
   }
