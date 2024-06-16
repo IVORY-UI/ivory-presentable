@@ -1,5 +1,5 @@
 /**
- * Public API Surface of ivory-presentation
+ * Public API Surface of ivory-presentable
  */
 export * from './lib/helpers/click-outside.directive';
 export * from './lib/components/presentable-column-resizer/presentable-column-resizer.directive';
