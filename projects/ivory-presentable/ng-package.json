@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../dist/ivory-presentation",
+  "dest": "../../dist/ivory-presentable",
   "assets": [
     "src/lib/styles/variables.scss",
     "src/lib/styles/reference.scss",
