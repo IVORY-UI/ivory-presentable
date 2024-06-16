@@ -1,6 +1,17 @@
 {
   "name": "ivory-presentation",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IVORY-UI/ivory-presentable.git"
+  },
+  "keywords": [
+    "angular",
+    "typescript",
+    "component",
+    "datatable",
+    "datagrid"
+  ],
   "peerDependencies": {
     "@angular/common": "^17.2.0",
     "@angular/core": "^17.2.0"

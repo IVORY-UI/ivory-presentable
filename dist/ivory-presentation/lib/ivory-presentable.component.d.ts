@@ -47,6 +47,7 @@ export declare class IvoryPresentableComponent implements OnInit, OnDestroy, Aft
     constructor(cdr: ChangeDetectorRef, columnSizing: ColumnSizingService, elementManager: ElementManagerService, dataManager: DataManagerService, pageManager: PageManagerService, filterManager: FilterManagerService);
     ngOnInit(): void;
     processData(): void;
+    processRemoteData(data?: any): void;
     processLocalData(data?: any): void;
     setCurrVisibleData(from: number, to: number): void;
     addListeners(): void;
