@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'IVORY Presentable Demo';
+  sub$: Subscription = new Subscription();
 
   constructor(
     private http: HttpClient
@@ -16,7 +18,8 @@ export class AppComponent implements OnInit, OnDestroy {
   public tableConfig = {
     height: 600,
     style: 'standard',
-    dataSource: 'local'
+    dataStream: 'client-side', // client-side || server-side
+    recordsTotal: null
   };
   public tableColumns = [
     { 
@@ -185,8 +188,8 @@ export class AppComponent implements OnInit, OnDestroy {
   public tableControls = true;
   public tableData = [];
   public tablePagination = true;
-  public tablePageSize = 100;
-  public tablePageSizeOptions = [25, 50, 100, 200];
+  public tablePageSize = 20;
+  public tablePageSizeOptions = [20, 50, 100, 200];
   public tableSelection = true;
 
   ngOnInit() {
@@ -194,9 +197,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getData() {
-    this.http
-      .get('https://www.ag-grid.com/example-assets/olympic-winners.json')
-      .subscribe((data: any) => (this.tableData = data));
+    this.sub$.add(this.http
+      .get('/api/olympic-winners.json')
+      .subscribe((data: any) => (this.tableData = data)));
+  }
+
+  onParamsChange(event: any) {
+    console.log('Data params - ', event);
   }
 
   onRecordsSelected(event: any) {
@@ -204,7 +211,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    
+    this.sub$.unsubscribe();
   }
 
 }
