@@ -32,7 +32,7 @@
     (change)="updatePerPageRecords()"
   >
     @for (p of _records.options; track p) {
-      <option [value]="p">
+      <option [ngValue]="p">
         {{ p }}
       </option>
     }
