@@ -24,8 +24,15 @@ https://ivory-presentable.netlify.app/
 ## Compatibility & Browser Support
 Ivory Presentable perfectly works with Angular v17 and above. And works well with the latest versions of all major browsers.
 
-## Report & Support
+## Contribute & Report
 Ivory Presentable is currently in active development and fine-tuning. If you encounter any issues, please report them here - https://github.com/IVORY-UI/ivory-presentable/issues. If you would like to contribute, kindly submit a pull request here - https://github.com/IVORY-UI/ivory-presentable/pulls. 
+
+## Support
+
+Your support inspires & encourage us more. If you are interested to make a donation to us, please click the below PayPal button.
+
+[![PayPal.me](https://img.shields.io/badge/paypal-donate-119fde.svg)](https://www.paypal.me/LakshmikanthV)
+
 
 ## License
 This project is licensed under the MIT license. See the LICENSE file for more info.
