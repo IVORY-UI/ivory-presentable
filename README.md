@@ -33,6 +33,5 @@ Your support inspires & encourage us more. If you are interested to make a donat
 
 [![PayPal.me](https://img.shields.io/badge/paypal-donate-119fde.svg)](https://www.paypal.me/LakshmikanthV)
 
-
 ## License
 This project is licensed under the MIT license. See the LICENSE file for more info.
